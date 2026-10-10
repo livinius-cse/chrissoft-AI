@@ -16,6 +16,9 @@ import { toast } from 'sonner';
 import { authApi } from '@/api';
 import { useAuth } from '@/context/AuthContext';
 
+import { ThreeBackground } from '@/components/3d/ThreeBackground';
+import { ThreeBusinessToken } from '@/components/3d/ThreeBusinessToken';
+
 type AuthScreen = 'login' | 'signup' | 'forgot' | 'otp';
 
 export const Auth: React.FC = () => {
@@ -112,61 +115,71 @@ export const Auth: React.FC = () => {
     return (
         <div className="min-h-screen relative flex items-center justify-center p-4 bg-slate-950 text-slate-100 overflow-hidden font-sans select-none">
 
-            {/* Dynamic Stripe-like Mesh Glowing Background */}
-            <div className="absolute inset-0 z-0 overflow-hidden opacity-50">
-                <div className="absolute w-[600px] h-[600px] -top-96 -left-48 rounded-full bg-indigo-600/30 blur-[130px] animate-pulse duration-[8000ms]" />
-                <div className="absolute w-[800px] h-[800px] -bottom-96 -right-48 rounded-full bg-purple-600/20 blur-[150px] animate-pulse duration-[10000ms]" />
-                <div className="absolute w-[500px] h-[500px] top-1/2 left-2/3 rounded-full bg-emerald-600/10 blur-[120px]" />
-            </div>
+            {/* Real WebGL 3D Ambient Particle Constellation Scene */}
+            <ThreeBackground particleCount={450} interactive={true} />
 
-            {/* Grid Pattern overlay */}
+            {/* Subtle Gradient Glow & Grid Overlay */}
+            <div className="absolute inset-0 bg-radial from-orange-500/5 via-transparent to-slate-950/80 pointer-events-none z-0" />
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0" />
 
             {/* Auth Card Container */}
             <div className="relative w-full max-w-5xl grid lg:grid-cols-12 gap-8 z-10">
 
-                {/* Left Side: Premium Aesthetic Pitch (Notion/Linear style) */}
-                <div className="lg:col-span-6 flex flex-col justify-between p-6 lg:p-12 relative overflow-hidden rounded-3xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">
+                {/* Left Side: 3D Business Showcase & Platform Highlights */}
+                <div className="lg:col-span-6 flex flex-col justify-between p-6 lg:p-10 relative overflow-hidden rounded-3xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-xl shadow-2xl">
                     <div className="flex items-center gap-2.5">
-                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-brand-500/20 text-white">
+                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center shadow-lg shadow-brand-500/30 text-white">
                             <Sparkles className="w-5.5 h-5.5" />
                         </div>
-                        <span className="font-display font-bold text-xl tracking-tight text-white">
-                            Equinox
+                        <div>
+                            <span className="font-display font-bold text-xl tracking-tight text-white">
+                                ChrisSoft AI
+                            </span>
+                            <span className="block text-[10px] uppercase font-mono tracking-widest text-brand-400 font-semibold">
+                                Business Suite 3D
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Interactive 3D Business Token */}
+                    <div className="my-6 flex flex-col items-center justify-center">
+                        <ThreeBusinessToken size={200} badgeText="ChrisSoft AI" className="mx-auto drop-shadow-2xl" />
+                        <span className="text-[11px] font-mono text-slate-400 tracking-wider mt-1">
+                            Interactive 3D Engine &bull; Drag or hover to tilt
                         </span>
                     </div>
 
-                    <div className="my-12 space-y-6">
-                        <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-                            A premium suite for <br />
-                            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-emerald-400 gradient-text">
-                                Billing &amp; Inventory
+                    <div className="space-y-4">
+                        <h1 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                            Next-Gen Intelligent <br />
+                            <span className="bg-gradient-to-r from-brand-400 via-amber-400 to-emerald-400 bg-clip-text text-transparent">
+                                Commerce &amp; ERP Platform
                             </span>
                         </h1>
-                        <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-                            Control sales workflows, audit stocks in real-time, generate professional tax invoices, and run forecasts matching Stripe-grade reliability.
+                        <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+                            High-velocity POS billing, multi-store stock audits, real-time GST reconciliation, and automated AI inventory forecasts.
                         </p>
 
                         {/* Feature Checkmarks list */}
-                        <div className="space-y-3 pt-4">
+                        <div className="space-y-2 pt-2">
                             <div className="flex items-center gap-3 text-xs">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                                <span className="text-slate-300">Live offline-capable POS billing flow</span>
+                                <CheckCircle2 className="w-4 h-4 text-brand-400 flex-shrink-0" />
+                                <span className="text-slate-300">Fast offline-capable POS billing flow</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs">
+                                <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                                <span className="text-slate-300">Automated Indian GST &amp; INR currency support</span>
                             </div>
                             <div className="flex items-center gap-3 text-xs">
                                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                                <span className="text-slate-300">Automatic GST billing calculation &amp; summaries</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-xs">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                                <span className="text-slate-300">Detailed stock levels audit, alert notifications</span>
+                                <span className="text-slate-300">Server-enforced Admin vs Staff access security</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="text-xs text-slate-500 flex items-center justify-between border-t border-slate-800/60 pt-6">
-                        <span>&copy; 2026 Equinox B2B Inc.</span>
-                        <span className="underline cursor-pointer hover:text-slate-400">Terms of Service</span>
+                    <div className="text-xs text-slate-500 flex items-center justify-between border-t border-slate-800/60 pt-5 mt-4">
+                        <span>&copy; 2026 ChrisSoft AI Inc.</span>
+                        <span className="text-slate-400 font-medium">Enterprise Edition</span>
                     </div>
                 </div>
 
