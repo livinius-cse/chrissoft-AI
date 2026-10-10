@@ -2,25 +2,9 @@ import { Router, Request, Response } from 'express';
 import { AuthService, UserPayload } from '@equation-orchestra/auth';
 import { store } from '../store';
 
+import { authenticate, authService } from '../middleware/auth';
+
 const router = Router();
-const authService = new AuthService();
-
-// Helper to extract bearer token
-export const authenticate = (req: Request, res: Response, next: () => void) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Authorization header missing or invalid' });
-  }
-
-  const token = authHeader.split(' ')[1];
-  try {
-    const payload = authService.verifyToken(token);
-    (req as any).user = payload;
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: 'Token is invalid or expired' });
-  }
-};
 
 router.post('/login', (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -91,17 +75,27 @@ router.post('/verify-otp', (req: Request, res: Response) => {
     return res.status(400).json({ error: 'OTP code is required' });
   }
 
-  // Accept valid 4-digit code (e.g. 1234 or any provided code)
-  const user = email ? store.getUserByEmail(email) : store.getCustomers()[0];
-  const userId = user ? user.id : 'u-1';
-  const userEmail = user ? user.email : 'alex@wrightcorp.com';
+  const isProduction = process.env.NODE_ENV === 'production';
+  if (isProduction && !email) {
+    return res.status(400).json({ error: 'Email is required for OTP verification in production' });
+  }
+
+  // In production, strictly require registered user matching email; in dev allow default account for convenience
+  const user = email ? store.getUserByEmail(email) : (!isProduction ? store.getUserByEmail('admin@chrissoft.com') : undefined);
+  if (!user) {
+    return res.status(404).json({ error: 'User account not found' });
+  }
+
+  const userId = user.id;
+  const userEmail = user.email;
+  const userRole = user.role;
 
   const payload: UserPayload = {
     userId,
     email: userEmail,
-    organizationId: 'org-1',
-    role: 'ADMIN',
-    permissions: ['all']
+    organizationId: user ? user.organizationId : 'org-1',
+    role: userRole,
+    permissions: user ? user.permissions : ['all']
   };
 
   const token = authService.generateToken(payload);
@@ -111,9 +105,9 @@ router.post('/verify-otp', (req: Request, res: Response) => {
     token,
     user: {
       id: userId,
-      name: user ? (user as any).name : 'Alexander Wright',
+      name: user ? user.name : 'Alexander Wright',
       email: userEmail,
-      role: 'ADMIN'
+      role: userRole
     }
   });
 });

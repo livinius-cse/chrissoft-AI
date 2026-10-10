@@ -72,7 +72,7 @@ export interface User {
   email: string;
   passwordHash: string;
   organizationId: string;
-  role: 'BUYER' | 'VENDOR' | 'ADMIN';
+  role: 'BUYER' | 'VENDOR' | 'ADMIN' | 'STAFF';
   permissions: string[];
   createdAt: string;
 }

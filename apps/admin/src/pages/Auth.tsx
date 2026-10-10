@@ -14,17 +14,20 @@ import {
 import { cn } from '@/utils/cn';
 import { toast } from 'sonner';
 import { authApi } from '@/api';
+import { useAuth } from '@/context/AuthContext';
 
 type AuthScreen = 'login' | 'signup' | 'forgot' | 'otp';
 
 export const Auth: React.FC = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [screen, setScreen] = useState<AuthScreen>('login');
+    const isDev = import.meta.env.DEV;
 
-    // Form states
-    const [email, setEmail] = useState('alex@wrightcorp.com');
-    const [password, setPassword] = useState('password');
-    const [businessName, setBusinessName] = useState('Wright Corporation');
+    // Form states - prefilled strictly in development mode only
+    const [email, setEmail] = useState(isDev ? 'admin@chrissoft.com' : '');
+    const [password, setPassword] = useState(isDev ? 'password123' : '');
+    const [businessName, setBusinessName] = useState(isDev ? 'ChrisSoft AI Enterprise' : '');
     const [otpCode, setOtpCode] = useState(['', '', '', '']);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
@@ -40,19 +43,17 @@ export const Auth: React.FC = () => {
         setErrorMsg('');
 
         try {
-            const res = await authApi.login(email, password);
-            if (res.token) {
-                localStorage.setItem('chrissoft_token', res.token);
-                localStorage.setItem('chrissoft_user', JSON.stringify(res.user));
+            const res = await login(email, password);
+            toast.success(`Welcome back, ${res.user?.name}!`);
+            if (res.user.role === 'STAFF') {
+                navigate('/billing');
+            } else {
+                navigate('/');
             }
-            toast.success(`Welcome back, ${res.user?.name || 'Administrator'}!`);
-            navigate('/');
         } catch (err: any) {
-            console.warn('Backend login fallback:', err);
-            // Graceful fallback for local demo
-            localStorage.setItem('chrissoft_token', 'demo-token');
-            toast.success('Signed in successfully.');
-            navigate('/');
+            const msg = err.message || 'Invalid email or password.';
+            setErrorMsg(msg);
+            toast.error(msg);
         } finally {
             setIsLoading(false);
         }
@@ -177,16 +178,39 @@ export const Auth: React.FC = () => {
                         {screen === 'login' && (
                             <form onSubmit={handleLogin} className="space-y-6">
                                 <div>
-                                    <h2 className="font-display text-2xl font-bold text-white tracking-tight">Accédez à votre compte</h2>
+                                    <h2 className="font-display text-2xl font-bold text-white tracking-tight">Sign in to ChrisSoft AI</h2>
                                     <p className="text-slate-400 text-xs mt-1.5">
-                                        Don't have an Equinox merchant site?{' '}
-                                        <span
-                                            onClick={() => setScreen('signup')}
-                                            className="text-brand-500 hover:text-brand-400 font-semibold cursor-pointer underline hover:no-underline"
-                                        >
-                                            Sign Up
-                                        </span>
+                                        Select a demo account or sign in with registered credentials.
                                     </p>
+                                    {isDev && (
+                                        <div className="flex items-center gap-2 mt-3 p-2 bg-slate-900/80 rounded-xl border border-slate-800">
+                                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider pl-1">Dev Role:</span>
+                                            <button
+                                                type="button"
+                                                onClick={() => { setEmail('admin@chrissoft.com'); setPassword('password123'); setErrorMsg(''); }}
+                                                className={cn(
+                                                    "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
+                                                    email === 'admin@chrissoft.com'
+                                                        ? "bg-brand-500 text-white shadow-sm"
+                                                        : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                                                )}
+                                            >
+                                                👑 Admin
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => { setEmail('staff@chrissoft.com'); setPassword('staff123'); setErrorMsg(''); }}
+                                                className={cn(
+                                                    "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
+                                                    email === 'staff@chrissoft.com'
+                                                        ? "bg-blue-600 text-white shadow-sm"
+                                                        : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                                                )}
+                                            >
+                                                👤 Staff (Cashier)
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {errorMsg && (

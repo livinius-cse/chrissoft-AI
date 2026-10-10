@@ -1,9 +1,15 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { store } from '../store';
+import {
+  authenticate,
+  requireRole,
+  AuthenticatedRequest
+} from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
+// GET /api/activities - ADMIN and STAFF
+router.get('/', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const { type, limit } = req.query;
   let activities = store.getActivities();
 
@@ -18,7 +24,8 @@ router.get('/', (req: Request, res: Response) => {
   return res.json(activities);
 });
 
-router.post('/', (req: Request, res: Response) => {
+// POST /api/activities - ADMIN and STAFF
+router.post('/', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const { title, description, type, time } = req.body;
   if (!title || !description || !type) {
     return res.status(400).json({ error: 'title, description, and type are required' });

@@ -1,9 +1,18 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { store } from '../store';
+import {
+  authenticate,
+  requireRole,
+  requireAdmin,
+  AuthenticatedRequest,
+  sanitizeProductsForRole,
+  sanitizeProductForRole
+} from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
+// GET /api/products - Both ADMIN and STAFF (cost scrubbed for staff)
+router.get('/', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const { category, search } = req.query;
   let products = store.getProducts();
 
@@ -20,18 +29,23 @@ router.get('/', (req: Request, res: Response) => {
     );
   }
 
-  return res.json(products);
+  const sanitized = sanitizeProductsForRole(products, req.user?.role);
+  return res.json(sanitized);
 });
 
-router.get('/:id', (req: Request, res: Response) => {
-  const product = store.getProduct(req.params.id);
+// GET /api/products/:id - Both ADMIN and STAFF (cost scrubbed for staff)
+router.get('/:id', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
+  const product = store.getProduct(id);
   if (!product) {
     return res.status(404).json({ error: 'Product not found' });
   }
-  return res.json(product);
+  const sanitized = sanitizeProductForRole(product, req.user?.role);
+  return res.json(sanitized);
 });
 
-router.post('/', (req: Request, res: Response) => {
+// POST /api/products - ADMIN ONLY
+router.post('/', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
   const { name, sku, barcode, price, cost, stock, minStock, category, image, status } = req.body;
 
   if (!name || !sku || !barcode || price === undefined || cost === undefined) {
@@ -54,21 +68,25 @@ router.post('/', (req: Request, res: Response) => {
   return res.status(201).json(newProduct);
 });
 
-router.put('/:id', (req: Request, res: Response) => {
-  const updated = store.updateProduct(req.params.id, req.body);
+// PUT /api/products/:id - ADMIN ONLY
+router.put('/:id', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
+  const updated = store.updateProduct(id, req.body);
   if (!updated) {
     return res.status(404).json({ error: 'Product not found' });
   }
   return res.json(updated);
 });
 
-router.post('/:id/restock', (req: Request, res: Response) => {
+// POST /api/products/:id/restock - ADMIN ONLY
+router.post('/:id/restock', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
   const qty = Number(req.body.quantity);
   if (isNaN(qty) || qty <= 0) {
     return res.status(400).json({ error: 'Valid restock quantity required' });
   }
 
-  const updated = store.restockProduct(req.params.id, qty);
+  const updated = store.restockProduct(id, qty);
   if (!updated) {
     return res.status(404).json({ error: 'Product not found' });
   }
@@ -80,8 +98,10 @@ router.post('/:id/restock', (req: Request, res: Response) => {
   });
 });
 
-router.delete('/:id', (req: Request, res: Response) => {
-  const deleted = store.deleteProduct(req.params.id);
+// DELETE /api/products/:id - ADMIN ONLY
+router.delete('/:id', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
+  const deleted = store.deleteProduct(id);
   if (!deleted) {
     return res.status(404).json({ error: 'Product not found' });
   }

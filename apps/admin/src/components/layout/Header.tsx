@@ -16,6 +16,7 @@ import {
     X
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useAuth } from '@/context/AuthContext';
 import { useApp } from '@/context/AppContext';
 import { cn } from '@/utils/cn';
 import { Link, useNavigate } from 'react-router-dom';
@@ -30,6 +31,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) => {
     const { theme, toggleTheme } = useTheme();
+    const { user, role, isAdmin, logout } = useAuth();
     const { activities, products, customers, searchQuery, setSearchQuery, isBackendConnected } = useApp();
     const navigate = useNavigate();
 
@@ -111,14 +113,16 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, mobileO
 
             {/* Right Navbar Controls */}
             <div className="flex items-center gap-3">
-                {/* AI Assistant Button */}
-                <button
-                    onClick={() => setShowAIAssistant(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all active:scale-95 duration-150 cursor-pointer"
-                >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                    <span className="hidden sm:inline">AI Copilot</span>
-                </button>
+                {/* AI Assistant Button (Admin Only) */}
+                {isAdmin && (
+                    <button
+                        onClick={() => setShowAIAssistant(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all active:scale-95 duration-150 cursor-pointer"
+                    >
+                        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                        <span className="hidden sm:inline">AI Copilot</span>
+                    </button>
+                )}
 
                 {/* API Status indicator */}
                 <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] font-medium border bg-muted/40 border-border">
@@ -149,12 +153,14 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, mobileO
                                 >
                                     Create Invoice <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
                                 </button>
-                                <button
-                                    onClick={() => { setShowQuickAdd(false); navigate('/products?add=true'); }}
-                                    className="w-full flex items-center justify-between px-2.5 py-2 text-sm text-foreground hover:bg-muted rounded-lg transition-colors text-left"
-                                >
-                                    Register Product <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
-                                </button>
+                                {isAdmin && (
+                                    <button
+                                        onClick={() => { setShowQuickAdd(false); navigate('/products?add=true'); }}
+                                        className="w-full flex items-center justify-between px-2.5 py-2 text-sm text-foreground hover:bg-muted rounded-lg transition-colors text-left"
+                                    >
+                                        Register Product <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                                    </button>
+                                )}
                                 <button
                                     onClick={() => { setShowQuickAdd(false); navigate('/customers?add=true'); }}
                                     className="w-full flex items-center justify-between px-2.5 py-2 text-sm text-foreground hover:bg-muted rounded-lg transition-colors text-left"
@@ -251,7 +257,7 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, mobileO
                     >
                         <div className="w-9 h-9 rounded-xl overflow-hidden border border-border hover:border-border-hover shadow-sm transition-all duration-150">
                             <div className="w-full h-full bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
-                                A
+                                {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
                             </div>
                         </div>
                     </button>
@@ -260,19 +266,23 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, mobileO
                         <>
                             <div className="fixed inset-0 z-40" onClick={() => setShowProfile(false)} />
                             <div className="absolute right-0 mt-2.5 w-52 rounded-xl border border-border bg-card p-1 shadow-lg z-50 animate-in fade-in-50 slide-in-from-top-3 duration-250">
-                                <div className="px-3 py-2 border-b border-border/60 mb-1 lg:hidden">
-                                    <p className="text-xs font-semibold text-foreground">Alexander Wright</p>
-                                    <p className="text-[10px] text-muted-foreground">Premium Admin</p>
+                                <div className="px-3 py-2 border-b border-border/60 mb-1">
+                                    <p className="text-xs font-semibold text-foreground">{user?.name || 'Alexander Wright'}</p>
+                                    <p className="text-[10px] text-muted-foreground font-mono uppercase">
+                                        {isAdmin ? 'Administrator' : 'Staff (Cashier)'}
+                                    </p>
                                 </div>
-                                <button
-                                    onClick={() => { setShowProfile(false); navigate('/settings'); }}
-                                    className="w-full flex items-center gap-2 px-2.5 py-2 text-xs text-foreground hover:bg-muted rounded-lg transition-colors text-left"
-                                >
-                                    <Settings className="w-3.5 h-3.5 text-muted-foreground" /> Business Settings
-                                </button>
+                                {isAdmin && (
+                                    <button
+                                        onClick={() => { setShowProfile(false); navigate('/settings'); }}
+                                        className="w-full flex items-center gap-2 px-2.5 py-2 text-xs text-foreground hover:bg-muted rounded-lg transition-colors text-left"
+                                    >
+                                        <Settings className="w-3.5 h-3.5 text-muted-foreground" /> Business Settings
+                                    </button>
+                                )}
                                 <div className="border-t border-border/60 my-1" />
                                 <button
-                                    onClick={() => { setShowProfile(false); navigate('/login'); }}
+                                    onClick={() => { setShowProfile(false); logout(); navigate('/login'); }}
                                     className="w-full flex items-center gap-2 px-2.5 py-2 text-xs text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors text-left font-medium"
                                 >
                                     <LogOut className="w-3.5 h-3.5" /> Sign Out

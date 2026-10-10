@@ -68,6 +68,16 @@ const initialUsers: User[] = [
     role: 'ADMIN',
     permissions: ['all'],
     createdAt: '2026-01-01T00:00:00Z'
+  },
+  {
+    id: 'u-3',
+    name: 'Rohan Sharma (Cashier)',
+    email: 'staff@chrissoft.com',
+    passwordHash: 'staff123',
+    organizationId: 'org-1',
+    role: 'STAFF',
+    permissions: ['pos', 'checkout', 'products:read', 'customers:read', 'customers:create'],
+    createdAt: '2026-01-01T00:00:00Z'
   }
 ];
 
@@ -94,7 +104,16 @@ class Store {
       }
       if (fs.existsSync(DATA_FILE)) {
         const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-        return JSON.parse(raw);
+        const parsed: StoreData = JSON.parse(raw);
+        // Ensure default staff user exists for testing/evaluation without breaking existing users
+        if (parsed.users && !parsed.users.some(u => u.email === 'staff@chrissoft.com')) {
+          const staffUser = initialUsers.find(u => u.email === 'staff@chrissoft.com');
+          if (staffUser) {
+            parsed.users.push(staffUser);
+            this.saveData(parsed);
+          }
+        }
+        return parsed;
       }
     } catch (e) {
       console.warn('Failed to read persisted store. Using defaults.', e);
@@ -307,7 +326,7 @@ class Store {
     if (customer) {
       customer = this.updateCustomer(customer.id, {
         purchaseCount: customer.purchaseCount + 1,
-        totalSpent: customer.totalSpent + total
+        totalSpent: Math.round((customer.totalSpent + total) * 100) / 100
       })!;
     }
 

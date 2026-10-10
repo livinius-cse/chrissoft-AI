@@ -11,21 +11,101 @@ import { Reports } from './pages/Reports';
 import { Analytics } from './pages/Analytics';
 import { Settings } from './pages/Settings';
 import { Auth } from './pages/Auth';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 const App: React.FC = () => (
   <>
     <Toaster position="top-right" richColors closeButton />
     <Routes>
+      {/* Public Authentication Screens */}
       <Route path="/login" element={<Auth />} />
       <Route path="/signup" element={<Auth />} />
-      <Route path="/" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
-      <Route path="/billing" element={<DashboardLayout><Billing /></DashboardLayout>} />
-      <Route path="/customers" element={<DashboardLayout><Customers /></DashboardLayout>} />
-      <Route path="/products" element={<DashboardLayout><Products /></DashboardLayout>} />
-      <Route path="/inventory" element={<DashboardLayout><Inventory /></DashboardLayout>} />
-      <Route path="/reports" element={<DashboardLayout><Reports /></DashboardLayout>} />
-      <Route path="/analytics" element={<DashboardLayout><Analytics /></DashboardLayout>} />
-      <Route path="/settings" element={<DashboardLayout><Settings /></DashboardLayout>} />
+
+      {/* Protected Routes (Staff & Admin) */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/billing"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Billing />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customers"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Customers />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Products />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inventory"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <Inventory />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin-Only Protected Routes */}
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <DashboardLayout>
+              <Reports />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <DashboardLayout>
+              <Analytics />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <DashboardLayout>
+              <Settings />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Wildcard Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </>

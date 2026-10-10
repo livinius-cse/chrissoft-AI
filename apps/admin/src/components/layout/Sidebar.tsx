@@ -12,11 +12,12 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
-    ShieldAlert,
-    Menu,
-    Sparkles
+    Sparkles,
+    ShieldCheck,
+    UserCheck
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { useAuth } from '@/context/AuthContext';
 
 interface SidebarProps {
     collapsed: boolean;
@@ -26,17 +27,21 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
     const location = useLocation();
+    const { role, isAdmin, logout } = useAuth();
 
-    const menuItems = [
-        { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-        { name: 'Billing (POS)', path: '/billing', icon: CreditCard },
-        { name: 'Customers', path: '/customers', icon: Users },
-        { name: 'Products', path: '/products', icon: ShoppingBag },
-        { name: 'Inventory', path: '/inventory', icon: Box },
-        { name: 'Reports', path: '/reports', icon: FileText },
-        { name: 'Analytics', path: '/analytics', icon: TrendingUp },
-        { name: 'Settings', path: '/settings', icon: Settings },
+    const allMenuItems = [
+        { name: 'Dashboard', path: '/', icon: LayoutDashboard, adminOnly: false },
+        { name: 'Billing (POS)', path: '/billing', icon: CreditCard, adminOnly: false },
+        { name: 'Customers', path: '/customers', icon: Users, adminOnly: false },
+        { name: 'Products', path: '/products', icon: ShoppingBag, adminOnly: false },
+        { name: 'Inventory', path: '/inventory', icon: Box, adminOnly: false },
+        { name: 'Reports', path: '/reports', icon: FileText, adminOnly: true },
+        { name: 'Analytics', path: '/analytics', icon: TrendingUp, adminOnly: true },
+        { name: 'Settings', path: '/settings', icon: Settings, adminOnly: true },
     ];
+
+    // Filter menu options strictly by role
+    const menuItems = allMenuItems.filter(item => !item.adminOnly || isAdmin);
 
     return (
         <aside
@@ -56,9 +61,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => 
                             <Sparkles className="w-5 h-5 animate-pulse" />
                         </div>
                         {!collapsed && (
-                            <span className="font-display font-bold text-lg tracking-tight bg-gradient-to-r from-foreground to-foreground/80">
-                                ChrisSoft AI
-                            </span>
+                            <div className="flex flex-col">
+                                <span className="font-display font-bold text-lg tracking-tight bg-gradient-to-r from-foreground to-foreground/80">
+                                    ChrisSoft AI
+                                </span>
+                                <span className="text-[10px] font-mono tracking-wider font-semibold text-brand-500 dark:text-brand-400 flex items-center gap-1">
+                                    {isAdmin ? (
+                                        <>
+                                            <ShieldCheck className="w-3 h-3 text-brand-500" /> ADMIN CONSOLE
+                                        </>
+                                    ) : (
+                                        <>
+                                            <UserCheck className="w-3 h-3 text-blue-400" /> STAFF POS
+                                        </>
+                                    )}
+                                </span>
+                            </div>
                         )}
                     </div>
 
@@ -125,21 +143,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => 
                     </button>
                 )}
 
-                <Link
-                    to="/login"
+                <button
+                    onClick={logout}
                     className={cn(
-                        "flex items-center gap-3.5 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-500 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 cursor-pointer overflow-hidden transition-all duration-150 group",
+                        "w-full flex items-center gap-3.5 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-500 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 cursor-pointer overflow-hidden transition-all duration-150 group text-left",
                         collapsed ? "justify-center" : ""
                     )}
                 >
                     <LogOut className="w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
-                    {!collapsed && <span>Logout</span>}
+                    {!collapsed && <span>Sign Out</span>}
                     {collapsed && (
                         <div className="absolute left-24 px-2.5 py-1.5 bg-rose-500 text-white text-xs font-semibold rounded-lg opacity-0 pointer-events-none translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 z-50 shadow-md">
-                            Logout
+                            Sign Out
                         </div>
                     )}
-                </Link>
+                </button>
             </div>
         </aside>
     );

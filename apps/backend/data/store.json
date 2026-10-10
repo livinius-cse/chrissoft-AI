@@ -7,8 +7,8 @@
       "phone": "+1 (555) 0192",
       "address": "499 Broadway, New York, NY 10012",
       "balance": 0,
-      "purchaseCount": 15,
-      "totalSpent": 4966.82,
+      "purchaseCount": 19,
+      "totalSpent": 10626.1,
       "avatarColor": "from-pink-500 to-rose-500",
       "createdAt": "2026-01-15T10:00:00Z"
     },
@@ -69,7 +69,7 @@
       "barcode": "190199092837",
       "price": 1199,
       "cost": 780,
-      "stock": 45,
+      "stock": 41,
       "minStock": 10,
       "category": "Electronics",
       "image": "📱",
@@ -155,6 +155,90 @@
     }
   ],
   "invoices": [
+    {
+      "id": "inv-1791630487312",
+      "invoiceNo": "INV-2026-08",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max (256GB - Titanium)",
+          "price": 1199,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1199,
+      "discount": 0,
+      "tax": 215.82,
+      "total": 1414.82,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T11:08:07.312Z"
+    },
+    {
+      "id": "inv-1791630411941",
+      "invoiceNo": "INV-2026-07",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max (256GB - Titanium)",
+          "price": 1199,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1199,
+      "discount": 0,
+      "tax": 215.82,
+      "total": 1414.82,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T11:06:51.941Z"
+    },
+    {
+      "id": "inv-1791630127761",
+      "invoiceNo": "INV-2026-06",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max (256GB - Titanium)",
+          "price": 1199,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1199,
+      "discount": 0,
+      "tax": 215.82,
+      "total": 1414.82,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T11:02:07.761Z"
+    },
+    {
+      "id": "inv-1791629783215",
+      "invoiceNo": "INV-2026-05",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max (256GB - Titanium)",
+          "price": 1199,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1199,
+      "discount": 0,
+      "tax": 215.82,
+      "total": 1414.82,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T10:56:23.215Z"
+    },
     {
       "id": "inv-1791611016904",
       "invoiceNo": "INV-2026-04",
@@ -254,6 +338,34 @@
   ],
   "activities": [
     {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-08 containing 1 item(s) for Alexander Wright. Total: $1414.82",
+      "type": "sale",
+      "id": "act-1791630487312-otj",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-07 containing 1 item(s) for Alexander Wright. Total: $1414.82",
+      "type": "sale",
+      "id": "act-1791630411942-3h0",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-06 containing 1 item(s) for Alexander Wright. Total: $1414.82",
+      "type": "sale",
+      "id": "act-1791630127761-mig",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-05 containing 1 item(s) for Alexander Wright. Total: $1414.82",
+      "type": "sale",
+      "id": "act-1791629783215-mnp",
+      "time": "Just now"
+    },
+    {
       "title": "Inventory Restocked",
       "description": "Restocked 16 units of AirPods Max (Space Gray Premium).",
       "type": "stock",
@@ -311,7 +423,7 @@
     "website": "https://chrissoft.ai",
     "taxRate": 18,
     "currency": "USD",
-    "receiptFooter": "Thank you for choosing ChrisSoft AI Enterprise Platform."
+    "receiptFooter": "Thank you for shopping with ChrisSoft AI!"
   },
   "users": [
     {
@@ -335,6 +447,22 @@
       "role": "ADMIN",
       "permissions": [
         "all"
+      ],
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "u-3",
+      "name": "Rohan Sharma (Cashier)",
+      "email": "staff@chrissoft.com",
+      "passwordHash": "staff123",
+      "organizationId": "org-1",
+      "role": "STAFF",
+      "permissions": [
+        "pos",
+        "checkout",
+        "products:read",
+        "customers:read",
+        "customers:create"
       ],
       "createdAt": "2026-01-01T00:00:00Z"
     }

@@ -1,9 +1,16 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { store } from '../store';
+import {
+  authenticate,
+  requireRole,
+  requireAdmin,
+  AuthenticatedRequest
+} from '../middleware/auth';
 
 const router = Router();
 
-router.get('/summary', (req: Request, res: Response) => {
+// GET /api/inventory/summary - ADMIN & STAFF (cost & margins scrubbed for staff)
+router.get('/summary', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const products = store.getProducts();
 
   const totalSkuCount = products.length;
@@ -16,21 +23,34 @@ router.get('/summary', (req: Request, res: Response) => {
   const warningCount = products.filter(p => p.stock > 0 && p.stock <= p.minStock).length;
   const healthyCount = products.filter(p => p.stock > p.minStock).length;
 
+  const health = {
+    dangerCount,
+    warningCount,
+    healthyCount
+  };
+
+  if (req.user?.role === 'STAFF') {
+    // Redact confidential cost valuation and margins for staff
+    return res.json({
+      totalSkuCount,
+      totalStockCount,
+      totalRetailValuation,
+      health
+    });
+  }
+
   return res.json({
     totalSkuCount,
     totalStockCount,
     totalCostValuation,
     totalRetailValuation,
     potentialMargin,
-    health: {
-      dangerCount,
-      warningCount,
-      healthyCount
-    }
+    health
   });
 });
 
-router.post('/restock-alerts', (req: Request, res: Response) => {
+// POST /api/inventory/restock-alerts - ADMIN ONLY
+router.post('/restock-alerts', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
   const products = store.getProducts();
   const lowStockItems = products.filter(p => p.stock <= p.minStock);
 

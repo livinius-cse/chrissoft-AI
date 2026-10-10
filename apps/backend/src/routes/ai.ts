@@ -1,9 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { AIService } from '@equation-orchestra/ai';
 import { store } from '../store';
+import { authenticate, requireAdmin, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
 const aiService = new AIService();
+
+// Secure all AI intelligence endpoints for ADMIN only
+router.use(authenticate, requireAdmin);
 
 // 1. Vendor Recommendations
 router.post('/recommend-vendors', async (req: Request, res: Response) => {

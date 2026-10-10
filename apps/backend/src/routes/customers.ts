@@ -1,9 +1,16 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { store } from '../store';
+import {
+  authenticate,
+  requireRole,
+  requireAdmin,
+  AuthenticatedRequest
+} from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
+// GET /api/customers - ADMIN and STAFF
+router.get('/', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const { search } = req.query;
   let customers = store.getCustomers();
 
@@ -19,15 +26,18 @@ router.get('/', (req: Request, res: Response) => {
   return res.json(customers);
 });
 
-router.get('/:id', (req: Request, res: Response) => {
-  const customer = store.getCustomer(req.params.id);
+// GET /api/customers/:id - ADMIN and STAFF
+router.get('/:id', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
+  const customer = store.getCustomer(id);
   if (!customer) {
     return res.status(404).json({ error: 'Customer not found' });
   }
   return res.json(customer);
 });
 
-router.post('/', (req: Request, res: Response) => {
+// POST /api/customers - ADMIN and STAFF (Cashier customer registration during checkout)
+router.post('/', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const { name, email, phone, address, avatarColor } = req.body;
 
   if (!name || !email) {
@@ -45,8 +55,10 @@ router.post('/', (req: Request, res: Response) => {
   return res.status(201).json(newCustomer);
 });
 
-router.put('/:id', (req: Request, res: Response) => {
-  const updated = store.updateCustomer(req.params.id, req.body);
+// PUT /api/customers/:id - ADMIN ONLY
+router.put('/:id', authenticate, requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
+  const updated = store.updateCustomer(id, req.body);
   if (!updated) {
     return res.status(404).json({ error: 'Customer not found' });
   }

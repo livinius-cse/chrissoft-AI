@@ -1,9 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { store } from '../store';
+import { authenticate, requireAdmin, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
+// Protect all analytics endpoints for ADMIN only
+router.use(authenticate, requireAdmin);
+
+router.get('/', (req: AuthenticatedRequest, res: Response) => {
   const invoices = store.getInvoices();
   const products = store.getProducts();
   const customers = store.getCustomers();

@@ -6,7 +6,7 @@ export interface UserPayload {
   userId: string;
   email: string;
   organizationId: string;
-  role: 'BUYER' | 'VENDOR' | 'ADMIN';
+  role: 'BUYER' | 'VENDOR' | 'ADMIN' | 'STAFF';
   permissions: string[];
 }
 
@@ -22,6 +22,14 @@ export class AuthService {
   hasPermission(payload: UserPayload, requiredPermission: string): boolean {
     if (payload.role === 'ADMIN') return true;
     return payload.permissions.includes(requiredPermission);
+  }
+
+  isAdmin(payload: UserPayload): boolean {
+    return payload.role === 'ADMIN';
+  }
+
+  isStaff(payload: UserPayload): boolean {
+    return payload.role === 'STAFF';
   }
 
   isBuyer(payload: UserPayload): boolean {

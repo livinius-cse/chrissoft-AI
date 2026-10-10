@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
 import App from './App';
 import './index.css';
@@ -12,11 +13,13 @@ if (container) {
   root.render(
     <React.StrictMode>
       <ThemeProvider>
-        <AppProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </AppProvider>
+        <AuthProvider>
+          <AppProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </AppProvider>
+        </AuthProvider>
       </ThemeProvider>
     </React.StrictMode>
   );

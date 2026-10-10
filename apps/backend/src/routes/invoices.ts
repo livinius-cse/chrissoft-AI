@@ -1,9 +1,15 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { store } from '../store';
+import {
+  authenticate,
+  requireRole,
+  AuthenticatedRequest
+} from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
+// GET /api/invoices - ADMIN and STAFF
+router.get('/', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
   const { customerId, status } = req.query;
   let invoices = store.getInvoices();
 
@@ -18,15 +24,18 @@ router.get('/', (req: Request, res: Response) => {
   return res.json(invoices);
 });
 
-router.get('/:id', (req: Request, res: Response) => {
-  const invoice = store.getInvoice(req.params.id);
+// GET /api/invoices/:id - ADMIN and STAFF
+router.get('/:id', authenticate, requireRole('ADMIN', 'STAFF'), (req: AuthenticatedRequest, res: Response) => {
+  const id = String(req.params.id);
+  const invoice = store.getInvoice(id);
   if (!invoice) {
     return res.status(404).json({ error: 'Invoice not found' });
   }
   return res.json(invoice);
 });
 
-const handleCheckout = (req: Request, res: Response) => {
+// POS Checkout Handler - ADMIN and STAFF
+const handleCheckout = (req: AuthenticatedRequest, res: Response) => {
   const { customerId, customerName, items, paymentMethod, discountPercent, taxPercent } = req.body;
 
   if (!items || !Array.isArray(items) || items.length === 0) {
@@ -54,7 +63,7 @@ const handleCheckout = (req: Request, res: Response) => {
   }
 };
 
-router.post('/checkout', handleCheckout);
-router.post('/', handleCheckout);
+router.post('/checkout', authenticate, requireRole('ADMIN', 'STAFF'), handleCheckout);
+router.post('/', authenticate, requireRole('ADMIN', 'STAFF'), handleCheckout);
 
 export default router;
