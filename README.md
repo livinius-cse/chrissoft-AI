@@ -271,7 +271,7 @@ Request body schemas, validation rules, and error responses should be taken from
 
 ## AI Capabilities
 
-ChrisSoft AI is designed around **actionable business context**, not just generic AI output.
+ChrisSoft AI is designed around **actionable AI business context**, not just generic AI output.
 
 | Intelligence workflow | Business question answered |
 | --- | --- |
@@ -317,7 +317,6 @@ Contributions are welcome where repository access and project policy permit. For
 **One platform for the operational work and purchasing decisions of a growing business.**
 
 ChrisSoft AI aims to help merchants spend less time switching tools and more time understanding stock, customers, cash flow, and supplier choices.
-
 ---
 
 <div align="center">
