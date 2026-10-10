@@ -1,0 +1,35 @@
+{
+  "name": "@equation-orchestra/backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@equation-orchestra/ai": "workspace:*",
+    "@equation-orchestra/analytics": "workspace:*",
+    "@equation-orchestra/auth": "workspace:*",
+    "@equation-orchestra/database": "workspace:*",
+    "@equation-orchestra/inventory": "workspace:*",
+    "@equation-orchestra/notifications": "workspace:*",
+    "@equation-orchestra/procurement": "workspace:*",
+    "@equation-orchestra/purchase-orders": "workspace:*",
+    "@equation-orchestra/quotations": "workspace:*",
+    "@equation-orchestra/rfq": "workspace:*",
+    "@equation-orchestra/search": "workspace:*",
+    "@equation-orchestra/shared": "workspace:*",
+    "@equation-orchestra/storage": "workspace:*",
+    "@equation-orchestra/vendor": "workspace:*",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
+  }
+}

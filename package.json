@@ -1,0 +1,26 @@
+{
+  "name": "equation-orchestra",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --filter=@equation-orchestra/backend --filter=@equation-orchestra/admin",
+    "dev:all": "turbo run dev",
+    "dev:backend": "pnpm --filter @equation-orchestra/backend dev",
+    "dev:frontend": "pnpm --filter @equation-orchestra/admin dev",
+    "dev:ai": "pnpm --filter @equation-orchestra/ai-service dev",
+    "start": "pnpm --filter @equation-orchestra/backend start",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "prettier": "^3.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "husky": "^8.0.0"
+  }
+}

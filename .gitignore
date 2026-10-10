@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Package managers
+package-lock.json
+pnpm-install-error*.txt
+
+# Logs
+*.log
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.*
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

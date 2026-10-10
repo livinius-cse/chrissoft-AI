@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: equation-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: medusa_procurement
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: equation-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  minio:
+    image: minio/minio:RELEASE.2023-09-07T01-14-38Z
+    container_name: equation-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpassword
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    restart: always
+
+  typesense:
+    image: typesense/typesense:0.25.1
+    container_name: equation-typesense
+    ports:
+      - "8108:8108"
+    environment:
+      TYPESENSE_API_KEY: typesense_api_key_123
+      TYPESENSE_DATA_DIR: /data
+    volumes:
+      - typesense_data:/data
+    restart: always
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  typesense_data:

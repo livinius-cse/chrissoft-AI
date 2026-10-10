@@ -1,0 +1,16 @@
+{
+  "name": "@equation-orchestra/quotations",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@equation-orchestra/database": "workspace:*",
+    "@equation-orchestra/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

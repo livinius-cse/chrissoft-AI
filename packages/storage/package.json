@@ -1,0 +1,16 @@
+{
+  "name": "@equation-orchestra/storage",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "minio": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/minio": "^7.1.0",
+    "typescript": "^5.0.0"
+  }
+}

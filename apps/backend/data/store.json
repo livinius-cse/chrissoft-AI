@@ -1,0 +1,342 @@
+{
+  "customers": [
+    {
+      "id": "c-1",
+      "name": "Alexander Wright",
+      "email": "alex@wrightcorp.com",
+      "phone": "+1 (555) 0192",
+      "address": "499 Broadway, New York, NY 10012",
+      "balance": 0,
+      "purchaseCount": 15,
+      "totalSpent": 4966.82,
+      "avatarColor": "from-pink-500 to-rose-500",
+      "createdAt": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "c-2",
+      "name": "Sophia Chen",
+      "email": "sophia.c@nexusdesign.io",
+      "phone": "+1 (555) 0432",
+      "address": "55 Spear St, San Francisco, CA 94105",
+      "balance": 840,
+      "purchaseCount": 8,
+      "totalSpent": 2980,
+      "avatarColor": "from-purple-500 to-indigo-500",
+      "createdAt": "2026-02-10T14:30:00Z"
+    },
+    {
+      "id": "c-3",
+      "name": "Marcus Miller",
+      "email": "marcus@millerlogistics.net",
+      "phone": "+1 (555) 0881",
+      "address": "1201 W Adams St, Chicago, IL 60607",
+      "balance": 0,
+      "purchaseCount": 22,
+      "totalSpent": 12450,
+      "avatarColor": "from-blue-500 to-cyan-500",
+      "createdAt": "2025-11-20T09:15:00Z"
+    },
+    {
+      "id": "c-4",
+      "name": "Elena Rostova",
+      "email": "elena@rostovbuilders.com",
+      "phone": "+1 (555) 0772",
+      "address": "782 Skyline Blvd, Austin, TX 78746",
+      "balance": 1250,
+      "purchaseCount": 5,
+      "totalSpent": 3000,
+      "avatarColor": "from-emerald-500 to-teal-500",
+      "createdAt": "2026-03-01T11:45:00Z"
+    },
+    {
+      "id": "c-5",
+      "name": "Devon Carter",
+      "email": "devon@cartergrowth.co",
+      "phone": "+1 (555) 0341",
+      "address": "220 N Green St, Denver, CO 80202",
+      "balance": 0,
+      "purchaseCount": 3,
+      "totalSpent": 920,
+      "avatarColor": "from-amber-500 to-orange-500",
+      "createdAt": "2026-04-12T16:20:00Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "p-1",
+      "sku": "PRD-IP15P",
+      "name": "iPhone 15 Pro Max (256GB - Titanium)",
+      "barcode": "190199092837",
+      "price": 1199,
+      "cost": 780,
+      "stock": 45,
+      "minStock": 10,
+      "category": "Electronics",
+      "image": "📱",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "p-2",
+      "sku": "PRD-M3MAC",
+      "name": "MacBook Pro 14 M3 Max (36GB / 1TB)",
+      "barcode": "190199081223",
+      "price": 3199,
+      "cost": 2150,
+      "stock": 12,
+      "minStock": 5,
+      "category": "Electronics",
+      "image": "💻",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "p-3",
+      "sku": "PRD-APRPM",
+      "name": "AirPods Max (Space Gray Premium)",
+      "barcode": "190199042318",
+      "price": 549,
+      "cost": 360,
+      "stock": 20,
+      "minStock": 8,
+      "category": "Audio",
+      "image": "🎧",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "p-4",
+      "sku": "PRD-LOGMX",
+      "name": "Logitech MX Master 3S Mouse",
+      "barcode": "097855172283",
+      "price": 99,
+      "cost": 52,
+      "stock": 77,
+      "minStock": 15,
+      "category": "Accessories",
+      "image": "🖱️",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "p-5",
+      "sku": "PRD-APPW9",
+      "name": "Apple Watch Series 9 (45mm GPS)",
+      "barcode": "190199098319",
+      "price": 429,
+      "cost": 280,
+      "stock": 18,
+      "minStock": 6,
+      "category": "Electronics",
+      "image": "⌚",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "p-6",
+      "sku": "PRD-SNDX4",
+      "name": "Sony WH-1000XM4 Noise Cancelling",
+      "barcode": "027242919373",
+      "price": 348,
+      "cost": 210,
+      "stock": 0,
+      "minStock": 5,
+      "category": "Audio",
+      "image": "🎧",
+      "status": "OUT_OF_STOCK"
+    },
+    {
+      "id": "p-7",
+      "sku": "PRD-KCHM2",
+      "name": "Keychron Q2 QMK Mechanical Keyboard",
+      "barcode": "075482312019",
+      "price": 189,
+      "cost": 110,
+      "stock": 3,
+      "minStock": 5,
+      "category": "Accessories",
+      "image": "⌨️",
+      "status": "ACTIVE"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "inv-1791611016904",
+      "invoiceNo": "INV-2026-04",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-4",
+          "name": "Logitech MX Master 3S Mouse",
+          "price": 99,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 99,
+      "discount": 0,
+      "tax": 17.82,
+      "total": 116.82,
+      "paymentMethod": "CARD",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T05:43:36.904Z"
+    },
+    {
+      "id": "inv-1",
+      "invoiceNo": "INV-2026-001",
+      "customerId": "c-3",
+      "customerName": "Marcus Miller",
+      "items": [
+        {
+          "productId": "p-2",
+          "name": "MacBook Pro 14 M3 Max",
+          "price": 3199,
+          "quantity": 2
+        },
+        {
+          "productId": "p-4",
+          "name": "Logitech MX Master 3S Mouse",
+          "price": 99,
+          "quantity": 2
+        }
+      ],
+      "subtotal": 6596,
+      "discount": 200,
+      "tax": 1151.28,
+      "total": 7547.28,
+      "paymentMethod": "CARD",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-07-28T14:24:00Z"
+    },
+    {
+      "id": "inv-2",
+      "invoiceNo": "INV-2026-002",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max",
+          "price": 1199,
+          "quantity": 1
+        },
+        {
+          "productId": "p-5",
+          "name": "Apple Watch Series 9",
+          "price": 429,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1628,
+      "discount": 0,
+      "tax": 293.04,
+      "total": 1921.04,
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-07-29T10:45:00Z"
+    },
+    {
+      "id": "inv-3",
+      "invoiceNo": "INV-2026-003",
+      "customerId": "c-2",
+      "customerName": "Sophia Chen",
+      "items": [
+        {
+          "productId": "p-3",
+          "name": "AirPods Max",
+          "price": 549,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 549,
+      "discount": 50,
+      "tax": 89.82,
+      "total": 588.82,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-07-30T09:30:00Z"
+    }
+  ],
+  "activities": [
+    {
+      "title": "Inventory Restocked",
+      "description": "Restocked 16 units of AirPods Max (Space Gray Premium).",
+      "type": "stock",
+      "id": "act-1791621522631-k6f",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-04 containing 1 item(s) for Alexander Wright. Total: $116.82",
+      "type": "sale",
+      "id": "act-1791611016905-8ip",
+      "time": "Just now"
+    },
+    {
+      "id": "act-1",
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-003 for Sophia Chen.",
+      "time": "2 hours ago",
+      "type": "sale"
+    },
+    {
+      "id": "act-2",
+      "title": "Low Stock Alert",
+      "description": "AirPods Max stock level is low (4 remaining).",
+      "time": "4 hours ago",
+      "type": "stock"
+    },
+    {
+      "id": "act-3",
+      "title": "New Product Registered",
+      "description": "Added Keychron Q2 Mechanical Keyboard under Accessories.",
+      "time": "Yesterday",
+      "type": "stock"
+    },
+    {
+      "id": "act-4",
+      "title": "Payment Received",
+      "description": "Received online UPI payment of $1,921.04 from Alexander Wright.",
+      "time": "Yesterday",
+      "type": "sale"
+    },
+    {
+      "id": "act-5",
+      "title": "OutOfStock Warning",
+      "description": "Sony WH-1000XM4 headphones are completely sold out.",
+      "time": "2 days ago",
+      "type": "stock"
+    }
+  ],
+  "settings": {
+    "businessName": "ChrisSoft AI Enterprise",
+    "businessEmail": "contact@chrissoft.ai",
+    "phone": "+1 (555) 0100",
+    "address": "499 Commerce Park, Suite 200, New York, NY 10012",
+    "website": "https://chrissoft.ai",
+    "taxRate": 18,
+    "currency": "USD",
+    "receiptFooter": "Thank you for choosing ChrisSoft AI Enterprise Platform."
+  },
+  "users": [
+    {
+      "id": "u-1",
+      "name": "Alexander Wright",
+      "email": "alex@wrightcorp.com",
+      "passwordHash": "password",
+      "organizationId": "org-1",
+      "role": "ADMIN",
+      "permissions": [
+        "all"
+      ],
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": "u-2",
+      "name": "Admin User",
+      "email": "admin@chrissoft.com",
+      "passwordHash": "password123",
+      "organizationId": "org-1",
+      "role": "ADMIN",
+      "permissions": [
+        "all"
+      ],
+      "createdAt": "2026-01-01T00:00:00Z"
+    }
+  ]
+}
