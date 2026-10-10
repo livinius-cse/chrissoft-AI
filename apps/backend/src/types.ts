@@ -92,6 +92,8 @@ export interface InvoiceItem {
   batchNumber?: string;
   serialNumber?: string;
   unitOfMeasure?: string;
+  hsnCode?: string;
+  taxRate?: number;
 }
 
 export interface Invoice {
@@ -99,11 +101,23 @@ export interface Invoice {
   invoiceNo: string;
   customerId: string;
   customerName: string;
+  customerGstin?: string;
+  customerAddress?: string;
   items: InvoiceItem[];
   subtotal: number;
   discount: number;
+  discountPercent?: number;
+  taxableAmount?: number;
+  taxRate?: number;
   tax: number;
+  cgst?: number;
+  sgst?: number;
+  igst?: number;
+  isInterState?: boolean;
   total: number;
+  amountInWords?: string;
+  placeOfSupply?: string;
+  gstin?: string;
   paymentMethod: 'CASH' | 'CARD' | 'UPI';
   paymentStatus: 'PAID' | 'DRAFT' | 'UNPAID';
   createdAt: string;

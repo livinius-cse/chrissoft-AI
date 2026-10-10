@@ -20,7 +20,7 @@ import {
     Shield
 } from 'lucide-react';
 import { useApp, Product, Customer, Invoice } from '@/context/AppContext';
-import { formatINR } from '@/utils/currency';
+import { formatINR, calculateGSTBreakdown, numberToIndianWords } from '@/utils/currency';
 import { toast } from 'sonner';
 
 export const Billing: React.FC = () => {
@@ -36,7 +36,8 @@ export const Billing: React.FC = () => {
         clearCart,
         checkout,
         addCustomer,
-        businessType
+        businessType,
+        settings
     } = useApp();
 
     // Search/Filter states
@@ -48,6 +49,9 @@ export const Billing: React.FC = () => {
     // Tax / Adjustments states
     const [discountPercent, setDiscountPercent] = useState<number>(0);
     const [taxPercent, setTaxPercent] = useState<number>(18);
+    const [isInterState, setIsInterState] = useState<boolean>(false);
+    const [placeOfSupply, setPlaceOfSupply] = useState<string>('27 - Maharashtra (Intra-state)');
+    const [customerGstin, setCustomerGstin] = useState<string>('');
     const [couponCode, setCouponCode] = useState('');
     const [orderNotes, setOrderNotes] = useState('');
     const [paymentMethod, setPaymentMethod] = useState<'CASH' | 'CARD' | 'UPI'>('CARD');
@@ -64,12 +68,17 @@ export const Billing: React.FC = () => {
     const [completedInvoice, setCompletedInvoice] = useState<Invoice | null>(null);
     const [isCheckingOut, setIsCheckingOut] = useState(false);
 
-    // 1. Calculations
+    // 1. Calculations with authoritative GST engine
     const subtotal = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
     const discountAmount = Math.round(subtotal * (discountPercent / 100) * 100) / 100;
-    const taxableAmount = subtotal - discountAmount;
-    const taxAmount = Math.round(taxableAmount * (taxPercent / 100) * 100) / 100;
-    const total = taxableAmount + taxAmount;
+    const gstBreakdown = calculateGSTBreakdown(subtotal, {
+        gstRate: taxPercent,
+        discount: discountAmount,
+        isInterState
+    });
+    const taxableAmount = gstBreakdown.netTaxableAmount;
+    const taxAmount = gstBreakdown.totalTax;
+    const total = gstBreakdown.grandTotal;
 
     // Categories list
     const categoriesList = ['All', ...new Set(products.map(p => p.category))];
@@ -150,7 +159,7 @@ export const Billing: React.FC = () => {
 
         setIsCheckingOut(true);
         try {
-            const invoice = await checkout(paymentMethod, discountPercent, taxPercent);
+            const invoice = await checkout(paymentMethod, discountPercent, taxPercent, isInterState, placeOfSupply);
             toast.success(`Transaction Completed! Invoice ${invoice.invoiceNo} generated.`);
             setCompletedInvoice(invoice);
 
@@ -413,10 +422,39 @@ export const Billing: React.FC = () => {
                         </button>
                     </div>
 
+                    {/* Tax Supply Type & Rate Selector */}
+                    <div className="space-y-2 border-b border-border/60 pb-2.5">
+                        <div className="flex items-center justify-between text-[11px]">
+                            <span className="font-semibold text-muted-foreground">Supply Type</span>
+                            <div className="flex rounded-lg border border-border p-0.5 bg-muted/40 text-[10px]">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsInterState(false)}
+                                    className={cn(
+                                        "px-2 py-0.5 rounded font-medium transition-all cursor-pointer",
+                                        !isInterState ? "bg-card text-foreground shadow-xs font-bold" : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                >
+                                    Intra (CGST+SGST)
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsInterState(true)}
+                                    className={cn(
+                                        "px-2 py-0.5 rounded font-medium transition-all cursor-pointer",
+                                        isInterState ? "bg-card text-foreground shadow-xs font-bold" : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                >
+                                    Inter (IGST)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Totals */}
                     <div className="space-y-1.5 text-xs text-muted-foreground border-b border-border/60 pb-2.5">
                         <div className="flex justify-between">
-                            <span>Items Total</span>
+                            <span>Items Subtotal</span>
                             <span className="font-semibold text-foreground">{formatINR(subtotal)}</span>
                         </div>
                         <div className="flex justify-between">
@@ -425,7 +463,7 @@ export const Billing: React.FC = () => {
                                 <input
                                     type="number"
                                     value={discountPercent || ''}
-                                    onChange={(e) => setDiscountPercent(Math.min(100, Number(e.target.value)))}
+                                    onChange={(e) => setDiscountPercent(Math.min(100, Math.max(0, Number(e.target.value))))}
                                     className="w-8 bg-transparent text-right border-b border-border text-xs focus:outline-none select-all"
                                     placeholder="0"
                                 />
@@ -433,21 +471,41 @@ export const Billing: React.FC = () => {
                             </div>
                         </div>
                         <div className="flex justify-between">
-                            <span>GST ({taxPercent}%)</span>
-                            <div className="flex items-center gap-1">
-                                <select
-                                    value={taxPercent}
-                                    onChange={(e) => setTaxPercent(Number(e.target.value))}
-                                    className="bg-transparent font-medium border-b border-border text-xs focus:outline-none"
-                                >
-                                    <option value={18}>18% (Standard)</option>
-                                    <option value={12}>12% (Reduced)</option>
-                                    <option value={5}>5% (Essential)</option>
-                                    <option value={0}>0% (Tax Free)</option>
-                                </select>
-                                <span>(+{formatINR(taxAmount)})</span>
-                            </div>
+                            <span>Taxable Value</span>
+                            <span className="font-semibold text-foreground">{formatINR(taxableAmount)}</span>
                         </div>
+                        <div className="flex justify-between items-center">
+                            <span>GST Rate</span>
+                            <select
+                                value={taxPercent}
+                                onChange={(e) => setTaxPercent(Number(e.target.value))}
+                                className="bg-transparent font-medium border-b border-border text-xs focus:outline-none cursor-pointer"
+                            >
+                                <option value={18}>18% (Standard GST)</option>
+                                <option value={12}>12% (Standard Low)</option>
+                                <option value={5}>5% (Essential Goods)</option>
+                                <option value={28}>28% (Luxury / Sin Goods)</option>
+                                <option value={0}>0% (Exempt / Nil Rated)</option>
+                            </select>
+                        </div>
+                        {taxPercent > 0 && !isInterState && (
+                            <>
+                                <div className="flex justify-between text-[11px] text-muted-foreground/90 pl-2">
+                                    <span>CGST ({taxPercent / 2}%)</span>
+                                    <span>+{formatINR(gstBreakdown.cgstAmount)}</span>
+                                </div>
+                                <div className="flex justify-between text-[11px] text-muted-foreground/90 pl-2">
+                                    <span>SGST ({taxPercent / 2}%)</span>
+                                    <span>+{formatINR(gstBreakdown.sgstAmount)}</span>
+                                </div>
+                            </>
+                        )}
+                        {taxPercent > 0 && isInterState && (
+                            <div className="flex justify-between text-[11px] text-muted-foreground/90 pl-2">
+                                <span>IGST ({taxPercent}%)</span>
+                                <span>+{formatINR(gstBreakdown.igstAmount)}</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex justify-between items-center">
@@ -575,15 +633,15 @@ export const Billing: React.FC = () => {
             {completedInvoice && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs select-none">
                     <div className="fixed inset-0" onClick={() => setCompletedInvoice(null)} />
-                    <div className="relative w-full max-w-2xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden p-6 animate-in slide-in-from-bottom-4 duration-300">
+                    <div className="relative w-full max-w-3xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden p-6 animate-in slide-in-from-bottom-4 duration-300 max-h-[92vh] flex flex-col">
 
-                        {/* Header */}
-                        <div className="flex justify-between items-start border-b border-border pb-4 mb-4">
+                        {/* Modal Header */}
+                        <div className="flex justify-between items-start border-b border-border pb-3 mb-3 flex-shrink-0 no-print">
                             <div>
-                                <h3 className="font-display font-bold text-lg flex items-center gap-1.5">
-                                    <CheckCircle2 className="w-5.5 h-5.5 text-emerald-500 animate-bounce" /> {completedInvoice.invoiceNo} Created
+                                <h3 className="font-display font-bold text-base flex items-center gap-1.5">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-500 animate-bounce" /> {completedInvoice.invoiceNo} Generated
                                 </h3>
-                                <p className="text-[10px] text-muted-foreground mt-1">Transaction recorded &bull; Real-time POS checkout</p>
+                                <p className="text-[10px] text-muted-foreground mt-0.5">Authoritative GST Invoice &bull; Real-time POS checkout</p>
                             </div>
                             <button onClick={() => setCompletedInvoice(null)} className="p-1.5 hover:bg-muted text-muted-foreground hover:text-foreground rounded-lg cursor-pointer">
                                 <X className="w-4.5 h-4.5" />
@@ -591,98 +649,164 @@ export const Billing: React.FC = () => {
                         </div>
 
                         {/* Print Area */}
-                        <div id="invoice-print-area" className="space-y-4 text-xs">
-                            <div className="flex justify-between">
-                                <div>
-                                    <h4 className="font-display font-extrabold text-base text-brand-400 flex items-center gap-1.5">
-                                        <Sparkles className="w-4 h-4" /> ChrisSoft AI Merchant
-                                    </h4>
-                                    <p className="text-muted-foreground text-[10px] mt-0.5">Enterprise POS terminal &bull; {businessType}</p>
-                                    <p className="text-muted-foreground text-[9px] mt-1">GSTIN: 27AAAAA1111A1Z1</p>
-                                </div>
-                                <div className="text-right">
-                                    <span className="text-muted-foreground text-[10px] font-semibold uppercase block mb-1">Details</span>
-                                    <p className="font-bold">Total: {formatINR(completedInvoice.total)}</p>
-                                    <p className="text-muted-foreground">Method: {completedInvoice.paymentMethod}</p>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
-                                <div>
-                                    <span className="text-muted-foreground text-[9px] font-semibold uppercase block mb-1 font-bold">Store Operator</span>
-                                    <p>ChrisSoft Cashier Station</p>
-                                    <p className="text-muted-foreground">Station ID: POS-01</p>
-                                </div>
-                                <div>
-                                    <span className="text-muted-foreground text-[9px] font-semibold uppercase block mb-1 font-bold">Client</span>
-                                    <p>{completedInvoice.customerName}</p>
-                                    <p className="text-muted-foreground">Customer ID: {completedInvoice.customerId}</p>
+                        <div id="invoice-print-area" className="space-y-3.5 text-xs overflow-y-auto pr-1 flex-1">
+                            {/* Invoice Title & Seller Info */}
+                            <div className="border border-border/80 rounded-xl p-3.5 bg-muted/20">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <span className="text-[9px] uppercase font-bold text-brand-600 dark:text-brand-400 tracking-wider block mb-0.5">Tax Invoice / Bill of Supply</span>
+                                        <h4 className="font-display font-extrabold text-base text-foreground flex items-center gap-1.5">
+                                            <Sparkles className="w-4 h-4 text-brand-500" /> {settings?.businessName || 'ChrisSoft AI Enterprise'}
+                                        </h4>
+                                        <p className="text-muted-foreground text-[10px] mt-0.5">{businessType} Preset &bull; {settings?.address || 'Commerce Hub, Mumbai, MH 400001'}</p>
+                                        <div className="flex items-center gap-3 mt-1.5 text-[10px] text-muted-foreground font-mono">
+                                            <span>GSTIN: <strong className="text-foreground">{completedInvoice.gstin || settings?.gstin || '27AAAAA1111A1Z1'}</strong></span>
+                                            {settings?.pan && <span>PAN: <strong className="text-foreground">{settings.pan}</strong></span>}
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <span className="px-2 py-0.5 bg-brand-500/10 text-brand-600 dark:text-brand-400 rounded-md text-[10px] font-bold font-mono">ORIGINAL FOR RECIPIENT</span>
+                                        <p className="font-mono font-bold text-sm text-foreground mt-1.5">{completedInvoice.invoiceNo}</p>
+                                        <p className="text-muted-foreground text-[10px]">{new Date(completedInvoice.createdAt).toLocaleString('en-IN')}</p>
+                                        <p className="text-[10px] text-muted-foreground mt-0.5">Method: <strong className="text-foreground">{completedInvoice.paymentMethod}</strong></p>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Items Table */}
-                            <div className="border border-border rounded-xl overflow-hidden mt-4">
-                                <table className="w-full text-left border-collapse">
+                            {/* Two-Column Parties & Supply Details */}
+                            <div className="grid grid-cols-2 gap-3 text-[11px]">
+                                <div className="border border-border/60 rounded-xl p-3 bg-card">
+                                    <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-wider block mb-1">Billed To (Customer Details)</span>
+                                    <p className="font-bold text-foreground text-xs">{completedInvoice.customerName}</p>
+                                    <p className="text-muted-foreground text-[10px] mt-0.5">{completedInvoice.customerAddress || 'Client Account'}</p>
+                                    <p className="text-muted-foreground text-[10px] mt-0.5">
+                                        GSTIN: <span className="font-mono text-foreground font-medium">{completedInvoice.customerGstin || 'URP (Unregistered Person)'}</span>
+                                    </p>
+                                </div>
+
+                                <div className="border border-border/60 rounded-xl p-3 bg-card">
+                                    <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-wider block mb-1">Place of Supply & Tax Treatment</span>
+                                    <p className="font-semibold text-foreground text-xs">{completedInvoice.placeOfSupply || '27 - Maharashtra (Intra-state)'}</p>
+                                    <p className="text-muted-foreground text-[10px] mt-0.5">
+                                        Tax Supply Type: <strong className="text-foreground">{completedInvoice.isInterState ? 'Inter-state (IGST)' : 'Intra-state (CGST + SGST)'}</strong>
+                                    </p>
+                                    <p className="text-muted-foreground text-[10px] mt-0.5">Reverse Charge: <span className="text-foreground">No</span></p>
+                                </div>
+                            </div>
+
+                            {/* Itemized Table */}
+                            <div className="border border-border rounded-xl overflow-hidden">
+                                <table className="w-full text-left border-collapse text-xs">
                                     <thead>
                                         <tr className="bg-muted text-[10px] uppercase font-bold text-muted-foreground border-b border-border">
-                                            <th className="p-2.5">Item Name</th>
+                                            <th className="p-2.5">Item Description</th>
+                                            <th className="p-2.5 text-center font-mono">HSN/SAC</th>
                                             <th className="p-2.5 text-center">Unit Price</th>
                                             <th className="p-2.5 text-center">Qty</th>
-                                            <th className="p-2.5 text-right">Sum</th>
+                                            <th className="p-2.5 text-right">Taxable Value</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className="divide-y divide-border/60">
                                         {completedInvoice.items.map((item, idx) => (
-                                            <tr key={idx} className="border-b last:border-0 border-border/80">
+                                            <tr key={idx} className="hover:bg-muted/20">
                                                 <td className="p-2.5 font-medium">
-                                                    {item.name}
-                                                    {item.batchNumber && <span className="block text-[9px] text-muted-foreground font-mono">Batch: {item.batchNumber}</span>}
+                                                    <span className="text-foreground font-semibold">{item.name}</span>
+                                                    <div className="flex gap-2 text-[9px] text-muted-foreground font-mono mt-0.5">
+                                                        {item.batchNumber && <span>Batch: {item.batchNumber}</span>}
+                                                        {item.serialNumber && <span>Serial: {item.serialNumber}</span>}
+                                                        {item.unitOfMeasure && <span>UOM: {item.unitOfMeasure}</span>}
+                                                    </div>
                                                 </td>
-                                                <td className="p-2.5 text-center">{formatINR(item.price)}</td>
-                                                <td className="p-2.5 text-center">{item.quantity}</td>
-                                                <td className="p-2.5 text-right font-bold">{formatINR(item.price * item.quantity)}</td>
+                                                <td className="p-2.5 text-center font-mono text-muted-foreground text-[11px]">{item.hsnCode || '8471'}</td>
+                                                <td className="p-2.5 text-center text-muted-foreground">{formatINR(item.price)}</td>
+                                                <td className="p-2.5 text-center font-medium">{item.quantity}</td>
+                                                <td className="p-2.5 text-right font-bold text-foreground">{formatINR(item.price * item.quantity)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
 
-                            {/* Tax Calculations */}
-                            <div className="flex flex-col items-end space-y-1.5 border-t border-border pt-4">
-                                <div className="flex justify-between w-56 text-[11px]">
-                                    <span className="text-muted-foreground">Subtotal</span>
-                                    <span className="font-semibold">{formatINR(completedInvoice.subtotal)}</span>
-                                </div>
-                                {completedInvoice.discount > 0 && (
-                                    <div className="flex justify-between w-56 text-[11px] text-rose-500">
-                                        <span>Discount</span>
-                                        <span>-{formatINR(completedInvoice.discount)}</span>
+                            {/* Financial Reconciliation & Tax Summary */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-border pt-3">
+                                {/* Amount in Words */}
+                                <div className="space-y-2">
+                                    <div>
+                                        <span className="text-[9px] font-bold uppercase text-muted-foreground block mb-0.5">Amount Chargeable in Words</span>
+                                        <p className="text-xs font-semibold text-foreground italic border-l-2 border-brand-500 pl-2 py-1 bg-muted/30 rounded-r-lg">
+                                            {completedInvoice.amountInWords || numberToIndianWords(completedInvoice.total)}
+                                        </p>
                                     </div>
-                                )}
-                                <div className="flex justify-between w-56 text-[11px]">
-                                    <span className="text-muted-foreground">GST ({taxPercent}%)</span>
-                                    <span className="font-semibold">{formatINR(completedInvoice.tax)}</span>
+                                    <p className="text-[10px] text-muted-foreground mt-2">
+                                        {settings?.receiptFooter || 'Thank you for choosing ChrisSoft AI Enterprise Platform.'}
+                                    </p>
+                                    <p className="text-[9px] text-muted-foreground/70">
+                                        Computer generated tax invoice. Subject to local jurisdiction.
+                                    </p>
                                 </div>
-                                <div className="flex justify-between w-56 font-bold text-sm border-t border-border pt-1.5">
-                                    <span>Grand Total</span>
-                                    <span className="text-brand-500">{formatINR(completedInvoice.total)}</span>
+
+                                {/* Financial Calculations Sub-table */}
+                                <div className="flex flex-col items-end space-y-1.5 text-xs">
+                                    <div className="flex justify-between w-64 text-[11px]">
+                                        <span className="text-muted-foreground">Items Subtotal</span>
+                                        <span className="font-semibold text-foreground">{formatINR(completedInvoice.subtotal)}</span>
+                                    </div>
+                                    {completedInvoice.discount > 0 && (
+                                        <div className="flex justify-between w-64 text-[11px] text-rose-500">
+                                            <span>Trade Discount {completedInvoice.discountPercent ? `(${completedInvoice.discountPercent}%)` : ''}</span>
+                                            <span>-{formatINR(completedInvoice.discount)}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between w-64 text-[11px] border-t border-border/60 pt-1">
+                                        <span className="text-muted-foreground">Net Taxable Amount</span>
+                                        <span className="font-semibold text-foreground">{formatINR(completedInvoice.taxableAmount ?? (completedInvoice.subtotal - completedInvoice.discount))}</span>
+                                    </div>
+
+                                    {/* Dual CGST + SGST or IGST */}
+                                    {!completedInvoice.isInterState ? (
+                                        <>
+                                            <div className="flex justify-between w-64 text-[11px] text-muted-foreground">
+                                                <span>Central GST (CGST {(completedInvoice.taxRate ?? 18) / 2}%)</span>
+                                                <span className="font-medium text-foreground">{formatINR(completedInvoice.cgst ?? (completedInvoice.tax / 2))}</span>
+                                            </div>
+                                            <div className="flex justify-between w-64 text-[11px] text-muted-foreground">
+                                                <span>State GST (SGST {(completedInvoice.taxRate ?? 18) / 2}%)</span>
+                                                <span className="font-medium text-foreground">{formatINR(completedInvoice.sgst ?? (completedInvoice.tax / 2))}</span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="flex justify-between w-64 text-[11px] text-muted-foreground">
+                                            <span>Integrated GST (IGST {completedInvoice.taxRate ?? 18}%)</span>
+                                            <span className="font-medium text-foreground">{formatINR(completedInvoice.igst ?? completedInvoice.tax)}</span>
+                                        </div>
+                                    )}
+
+                                    <div className="flex justify-between w-64 text-[11px] text-muted-foreground">
+                                        <span>Total GST</span>
+                                        <span className="font-semibold text-foreground">{formatINR(completedInvoice.tax)}</span>
+                                    </div>
+
+                                    <div className="flex justify-between w-64 font-bold text-sm border-t border-border pt-1.5">
+                                        <span className="text-foreground">Grand Total (INR)</span>
+                                        <span className="text-brand-500 font-extrabold">{formatINR(completedInvoice.total)}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Print and Download Triggers */}
-                        <div className="mt-6 flex gap-2 justify-end no-print">
+                        {/* Modal Action Buttons */}
+                        <div className="mt-4 pt-3 border-t border-border flex gap-2 justify-end no-print flex-shrink-0">
                             <button
                                 onClick={() => window.print()}
-                                className="px-4 py-2 border border-border hover:bg-muted text-xs font-semibold rounded-xl text-muted-foreground cursor-pointer"
+                                className="px-4 py-2 border border-border hover:bg-muted text-xs font-semibold rounded-xl text-muted-foreground cursor-pointer flex items-center gap-1.5"
                             >
-                                Print Invoice
+                                <Printer className="w-3.5 h-3.5" /> Print Tax Invoice
                             </button>
                             <button
                                 onClick={() => setCompletedInvoice(null)}
                                 className="px-4 py-2 bg-gradient-to-r from-brand-600 to-amber-600 hover:from-brand-500 hover:to-amber-500 text-white text-xs font-semibold rounded-xl cursor-pointer shadow-md"
                             >
-                                Accept Checkout
+                                Done
                             </button>
                         </div>
 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { productsApi, customersApi, invoicesApi, activitiesApi, settingsApi } from '../api';
+import { calculateGSTBreakdown, numberToIndianWords } from '../utils/currency';
 
 export type BusinessType =
     | 'RETAIL'
@@ -91,6 +92,8 @@ export interface InvoiceItem {
     batchNumber?: string;
     serialNumber?: string;
     unitOfMeasure?: string;
+    hsnCode?: string;
+    taxRate?: number;
 }
 
 export interface Invoice {
@@ -98,11 +101,23 @@ export interface Invoice {
     invoiceNo: string;
     customerId: string;
     customerName: string;
+    customerGstin?: string;
+    customerAddress?: string;
     items: InvoiceItem[];
     subtotal: number;
     discount: number;
+    discountPercent?: number;
+    taxableAmount?: number;
+    taxRate?: number;
     tax: number;
+    cgst?: number;
+    sgst?: number;
+    igst?: number;
+    isInterState?: boolean;
     total: number;
+    amountInWords?: string;
+    placeOfSupply?: string;
+    gstin?: string;
     paymentMethod: 'CASH' | 'CARD' | 'UPI';
     paymentStatus: 'PAID' | 'DRAFT' | 'UNPAID';
     createdAt: string;
@@ -145,7 +160,7 @@ interface AppContextType {
     removeFromCart: (productId: string) => void;
     updateCartQty: (productId: string, qty: number) => void;
     clearCart: () => void;
-    checkout: (paymentMethod: Invoice['paymentMethod'], discountPercent?: number, taxPercent?: number) => Promise<Invoice>;
+    checkout: (paymentMethod: Invoice['paymentMethod'], discountPercent?: number, taxPercent?: number, isInterState?: boolean, placeOfSupply?: string) => Promise<Invoice>;
     restockProduct: (productId: string, qty: number) => void;
     addProduct: (p: Omit<Product, 'id' | 'status'> & { status?: Product['status'] }) => Promise<Product>;
     updateProduct: (id: string, updates: Partial<Product>) => Promise<Product | undefined>;
@@ -316,7 +331,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     // Generate POS Invoice with Backend Integration
-    const checkout = async (paymentMethod: Invoice['paymentMethod'], discountPercent = 0, taxPercent = 18): Promise<Invoice> => {
+    const checkout = async (
+        paymentMethod: Invoice['paymentMethod'],
+        discountPercent = 0,
+        taxPercent = 18,
+        isInterState = false,
+        placeOfSupply = 'State (Intra-state)'
+    ): Promise<Invoice> => {
         if (cart.length === 0) throw new Error('Cart is empty');
 
         const customer = currentCustomer || {
@@ -336,13 +357,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const res = await invoicesApi.checkout({
                 customerId: customer.id,
                 customerName: customer.name,
+                customerAddress: customer.address,
                 items: cart.map(item => ({
                     productId: item.product.id,
-                    quantity: item.quantity
+                    quantity: item.quantity,
+                    batchNumber: item.selectedBatch || item.product.batchNumber,
+                    serialNumber: item.selectedSerial,
+                    unitOfMeasure: item.product.unitOfMeasure
                 })),
                 paymentMethod,
                 discountPercent,
-                taxPercent
+                taxPercent,
+                isInterState,
+                placeOfSupply
             });
 
             if (res.success && res.invoice) {
@@ -365,10 +392,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
         // Local fallback calculation
         const subtotal = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-        const discount = Math.round(subtotal * (discountPercent / 100) * 100) / 100;
-        const taxableAmount = subtotal - discount;
-        const tax = Math.round(taxableAmount * (taxPercent / 100) * 100) / 100;
-        const total = taxableAmount + tax;
+        const gst = calculateGSTBreakdown(subtotal, {
+            gstRate: taxPercent,
+            discount: Math.round(subtotal * (discountPercent / 100) * 100) / 100,
+            isInterState
+        });
+        const amountInWords = numberToIndianWords(gst.grandTotal);
 
         const invNo = `INV-2026-0${invoices.length + 1}`;
         const newInvoiceItems: InvoiceItem[] = cart.map(item => ({
@@ -376,9 +405,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             name: item.product.name,
             price: item.product.price,
             quantity: item.quantity,
-            batchNumber: item.selectedBatch,
+            batchNumber: item.selectedBatch || item.product.batchNumber,
             serialNumber: item.selectedSerial,
-            unitOfMeasure: item.product.unitOfMeasure
+            unitOfMeasure: item.product.unitOfMeasure,
+            hsnCode: '8471',
+            taxRate: taxPercent
         }));
 
         const newInvoice: Invoice = {
@@ -386,11 +417,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             invoiceNo: invNo,
             customerId: customer.id,
             customerName: customer.name,
+            customerAddress: customer.address,
             items: newInvoiceItems,
             subtotal,
-            discount,
-            tax,
-            total,
+            discount: gst.discount,
+            discountPercent,
+            taxableAmount: gst.netTaxableAmount,
+            taxRate: taxPercent,
+            tax: gst.totalTax,
+            cgst: gst.cgstAmount,
+            sgst: gst.sgstAmount,
+            igst: gst.igstAmount,
+            isInterState,
+            total: gst.grandTotal,
+            amountInWords,
+            placeOfSupply,
+            gstin: settings?.gstin,
             paymentMethod,
             paymentStatus: 'PAID',
             createdAt: new Date().toISOString()
@@ -417,7 +459,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                     return {
                         ...c,
                         purchaseCount: c.purchaseCount + 1,
-                        totalSpent: c.totalSpent + total
+                        totalSpent: c.totalSpent + gst.grandTotal
                     };
                 }
                 return c;

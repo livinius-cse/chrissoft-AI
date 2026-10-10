@@ -19,6 +19,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@/context/AuthContext';
 import { useApp } from '@/context/AppContext';
 import { cn } from '@/utils/cn';
+import { formatINR } from '@/utils/currency';
 import { Link, useNavigate } from 'react-router-dom';
 import { AIAssistantModal } from '../AIAssistantModal';
 
@@ -359,7 +360,7 @@ export const Header: React.FC<HeaderProps> = ({ collapsed, setCollapsed, mobileO
                                                 <span className="font-medium">{p.name}</span>
                                                 <span className="text-[10px] px-1.5 py-0.5 bg-muted text-muted-foreground rounded font-mono">{p.sku}</span>
                                             </div>
-                                            <span className="font-semibold text-muted-foreground">${p.price}</span>
+                                            <span className="font-semibold text-muted-foreground">{formatINR(p.price)}</span>
                                         </button>
                                     ))}
                                     {filteredProducts.length === 0 && (

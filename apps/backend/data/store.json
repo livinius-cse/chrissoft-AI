@@ -7,8 +7,8 @@
       "phone": "+1 (555) 0192",
       "address": "499 Broadway, New York, NY 10012",
       "balance": 0,
-      "purchaseCount": 21,
-      "totalSpent": 13455.74,
+      "purchaseCount": 22,
+      "totalSpent": 14870.56,
       "avatarColor": "from-pink-500 to-rose-500",
       "createdAt": "2026-01-15T10:00:00Z"
     },
@@ -62,6 +62,213 @@
     }
   ],
   "products": [
+    {
+      "name": "GST Certified Precision Hardware",
+      "sku": "GST-TEST-1791643162589",
+      "barcode": "GST1791643162589",
+      "price": 1000,
+      "cost": 600,
+      "stock": 43,
+      "minStock": 5,
+      "category": "Hardware",
+      "image": "⚙️",
+      "status": "ACTIVE",
+      "id": "p-1791643162590"
+    },
+    {
+      "name": "Premium Leather Bifold Wallet",
+      "sku": "RET-1791643137004",
+      "barcode": "8901234007",
+      "price": 1499,
+      "cost": 600,
+      "stock": 40,
+      "minStock": 8,
+      "category": "General",
+      "image": "📦",
+      "status": "ACTIVE",
+      "mrp": 2499,
+      "brand": "WildHorn",
+      "id": "p-1791643137006"
+    },
+    {
+      "name": "Industrial Microfibre Cleaning Cloth (Bulk Pack)",
+      "sku": "WS-1791643136999",
+      "barcode": "8901234006",
+      "price": 1200,
+      "cost": 650,
+      "stock": 500,
+      "minStock": 50,
+      "category": "Wholesale",
+      "image": "📦",
+      "status": "ACTIVE",
+      "minOrderQty": 5,
+      "cartonQty": 20,
+      "tieredPricing": [
+        {
+          "minQty": 10,
+          "unitPrice": 1100
+        },
+        {
+          "minQty": 50,
+          "unitPrice": 950
+        },
+        {
+          "minQty": 100,
+          "unitPrice": 850
+        }
+      ],
+      "id": "p-1791643137000"
+    },
+    {
+      "name": "Hex Flange Head Bolt Set (M10 x 50mm)",
+      "sku": "HW-1791643136994",
+      "barcode": "8901234005",
+      "price": 450,
+      "cost": 210,
+      "stock": 200,
+      "minStock": 25,
+      "category": "Hardware",
+      "image": "📦",
+      "status": "ACTIVE",
+      "unitOfMeasure": "box of 50",
+      "grade": "SS-304 Stainless Steel",
+      "gauge": "M10 x 50mm Pitch 1.5",
+      "technicalSpecs": "DIN 6921 standard, Tensile strength 700 N/mm2",
+      "id": "p-1791643136995"
+    },
+    {
+      "name": "Classic Linen Slim-Fit Shirt",
+      "sku": "FASH-1791643136989",
+      "barcode": "8901234004",
+      "price": 1999,
+      "cost": 850,
+      "stock": 30,
+      "minStock": 5,
+      "category": "Clothing",
+      "image": "📦",
+      "status": "ACTIVE",
+      "size": "L",
+      "color": "Navy Blue",
+      "material": "100% French Linen",
+      "variants": [
+        {
+          "sku": "FASH-S-NAVY",
+          "size": "S",
+          "color": "Navy",
+          "stock": 10,
+          "price": 1999
+        },
+        {
+          "sku": "FASH-M-NAVY",
+          "size": "M",
+          "color": "Navy",
+          "stock": 10,
+          "price": 1999
+        },
+        {
+          "sku": "FASH-L-NAVY",
+          "size": "L",
+          "color": "Navy",
+          "stock": 10,
+          "price": 1999
+        }
+      ],
+      "id": "p-1791643136990"
+    },
+    {
+      "name": "Sony Bravia 55\" 4K OLED TV",
+      "sku": "ELEC-1791643136982",
+      "barcode": "8901234003",
+      "price": 89999,
+      "cost": 65000,
+      "stock": 8,
+      "minStock": 2,
+      "category": "Electronics",
+      "image": "📦",
+      "status": "ACTIVE",
+      "brand": "Sony",
+      "model": "XR-55A80L",
+      "warrantyMonths": 36,
+      "serialNumbers": [
+        "SN-SONY-001",
+        "SN-SONY-002"
+      ],
+      "id": "p-1791643136984"
+    },
+    {
+      "name": "Amoxicillin & Clavulanate 625mg",
+      "sku": "MED-1791643136976",
+      "barcode": "8901234002",
+      "price": 180,
+      "cost": 110,
+      "stock": 98,
+      "minStock": 20,
+      "category": "Medicine",
+      "image": "📦",
+      "status": "ACTIVE",
+      "batchNumber": "MED-B992",
+      "expiryDate": "2028-12-31",
+      "composition": "Amoxicillin (500mg) + Clavulanic Acid (125mg)",
+      "dosageForm": "Tablet",
+      "requiresPrescription": true,
+      "id": "p-1791643136978"
+    },
+    {
+      "name": "Organic Whole Wheat Atta 5kg",
+      "sku": "GROC-1791643136971",
+      "barcode": "8901234001",
+      "price": 320,
+      "cost": 240,
+      "stock": 50,
+      "minStock": 10,
+      "category": "Groceries",
+      "image": "📦",
+      "status": "ACTIVE",
+      "batchNumber": "BATCH-2026-OCT",
+      "expiryDate": "2027-04-30",
+      "unitOfMeasure": "kg",
+      "isPerishable": false,
+      "id": "p-1791643136972"
+    },
+    {
+      "name": "GST Certified Precision Hardware",
+      "sku": "GST-TEST-1791643113877",
+      "barcode": "GST1791643113877",
+      "price": 1000,
+      "cost": 600,
+      "stock": 43,
+      "minStock": 5,
+      "category": "Hardware",
+      "image": "⚙️",
+      "status": "ACTIVE",
+      "id": "p-1791643113879"
+    },
+    {
+      "name": "GST Certified Precision Hardware",
+      "sku": "GST-TEST-1791643028119",
+      "barcode": "GST1791643028119",
+      "price": 1000,
+      "cost": 600,
+      "stock": 43,
+      "minStock": 5,
+      "category": "Hardware",
+      "image": "⚙️",
+      "status": "ACTIVE",
+      "id": "p-1791643028120"
+    },
+    {
+      "name": "GST Certified Precision Hardware",
+      "sku": "GST-TEST-1791643007416",
+      "barcode": "GST1791643007416",
+      "price": 1000,
+      "cost": 600,
+      "stock": 43,
+      "minStock": 5,
+      "category": "Hardware",
+      "image": "⚙️",
+      "status": "ACTIVE",
+      "id": "p-1791643007419"
+    },
     {
       "name": "Premium Leather Bifold Wallet",
       "sku": "RET-1791640765174",
@@ -224,7 +431,7 @@
       "barcode": "190199092837",
       "price": 1199,
       "cost": 780,
-      "stock": 39,
+      "stock": 38,
       "minStock": 10,
       "category": "Electronics",
       "image": "📱",
@@ -310,6 +517,712 @@
     }
   ],
   "invoices": [
+    {
+      "id": "inv-1791643162624",
+      "invoiceNo": "INV-2026-033",
+      "customerId": "c-walk-in",
+      "customerName": "Hacker Attempt",
+      "items": [
+        {
+          "productId": "p-1791643162590",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 18,
+      "tax": 180,
+      "cgst": 90,
+      "sgst": 90,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1180,
+      "amountInWords": "Rupees One Thousand One Hundred and Eighty Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:39:22.624Z"
+    },
+    {
+      "id": "inv-1791643162619",
+      "invoiceNo": "INV-2026-032",
+      "customerId": "c-walk-in",
+      "customerName": "Vikram Malhotra (Delhi)",
+      "items": [
+        {
+          "productId": "p-1791643162590",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 150,
+      "discountPercent": 15,
+      "taxableAmount": 850,
+      "taxRate": 18,
+      "tax": 153,
+      "cgst": 76.5,
+      "sgst": 76.5,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1003,
+      "amountInWords": "Rupees One Thousand Three Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:39:22.619Z"
+    },
+    {
+      "id": "inv-1791643162613",
+      "invoiceNo": "INV-2026-031",
+      "customerId": "c-walk-in",
+      "customerName": "Kavita Reddy (Bangalore)",
+      "items": [
+        {
+          "productId": "p-1791643162590",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 0
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 0,
+      "tax": 0,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1000,
+      "amountInWords": "Rupees One Thousand Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:39:22.613Z"
+    },
+    {
+      "id": "inv-1791643162605",
+      "invoiceNo": "INV-2026-030",
+      "customerId": "c-walk-in",
+      "customerName": "Priya Patel (Ahmedabad)",
+      "items": [
+        {
+          "productId": "p-1791643162590",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 360,
+      "isInterState": true,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "24 - Gujarat (Inter-state)",
+      "paymentMethod": "CARD",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:39:22.605Z"
+    },
+    {
+      "id": "inv-1791643162597",
+      "invoiceNo": "INV-2026-029",
+      "customerId": "c-walk-in",
+      "customerName": "Aarav Sharma (Mumbai)",
+      "items": [
+        {
+          "productId": "p-1791643162590",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 180,
+      "sgst": 180,
+      "igst": 0,
+      "isInterState": false,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "27 - Maharashtra (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:39:22.597Z"
+    },
+    {
+      "id": "inv-1791643137025",
+      "invoiceNo": "INV-2026-028",
+      "customerId": "c-walk-in",
+      "customerName": "Aarav Mehta",
+      "items": [
+        {
+          "productId": "p-1791643136978",
+          "name": "Amoxicillin & Clavulanate 625mg",
+          "price": 180,
+          "quantity": 2,
+          "batchNumber": "MED-B992",
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 360,
+      "discount": 18,
+      "discountPercent": 5,
+      "taxableAmount": 342,
+      "taxRate": 18,
+      "tax": 61.56,
+      "cgst": 30.78,
+      "sgst": 30.78,
+      "igst": 0,
+      "isInterState": false,
+      "total": 403.56,
+      "amountInWords": "Rupees Four Hundred and Three and Fifty-Six Paise Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:57.025Z"
+    },
+    {
+      "id": "inv-1791643128215",
+      "invoiceNo": "INV-2026-027",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "customerAddress": "499 Broadway, New York, NY 10012",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max (256GB - Titanium)",
+          "price": 1199,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1199,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1199,
+      "taxRate": 18,
+      "tax": 215.82,
+      "cgst": 107.91,
+      "sgst": 107.91,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1414.82,
+      "amountInWords": "Rupees One Thousand Four Hundred and Fourteen and Eighty-Two Paise Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:48.215Z"
+    },
+    {
+      "id": "inv-1791643113905",
+      "invoiceNo": "INV-2026-026",
+      "customerId": "c-walk-in",
+      "customerName": "Hacker Attempt",
+      "items": [
+        {
+          "productId": "p-1791643113879",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 18,
+      "tax": 180,
+      "cgst": 90,
+      "sgst": 90,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1180,
+      "amountInWords": "Rupees One Thousand One Hundred and Eighty Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:33.905Z"
+    },
+    {
+      "id": "inv-1791643113901",
+      "invoiceNo": "INV-2026-025",
+      "customerId": "c-walk-in",
+      "customerName": "Vikram Malhotra (Delhi)",
+      "items": [
+        {
+          "productId": "p-1791643113879",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 150,
+      "discountPercent": 15,
+      "taxableAmount": 850,
+      "taxRate": 18,
+      "tax": 153,
+      "cgst": 76.5,
+      "sgst": 76.5,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1003,
+      "amountInWords": "Rupees One Thousand Three Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:33.901Z"
+    },
+    {
+      "id": "inv-1791643113895",
+      "invoiceNo": "INV-2026-024",
+      "customerId": "c-walk-in",
+      "customerName": "Kavita Reddy (Bangalore)",
+      "items": [
+        {
+          "productId": "p-1791643113879",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 0
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 0,
+      "tax": 0,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1000,
+      "amountInWords": "Rupees One Thousand Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:33.895Z"
+    },
+    {
+      "id": "inv-1791643113889",
+      "invoiceNo": "INV-2026-023",
+      "customerId": "c-walk-in",
+      "customerName": "Priya Patel (Ahmedabad)",
+      "items": [
+        {
+          "productId": "p-1791643113879",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 360,
+      "isInterState": true,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "24 - Gujarat (Inter-state)",
+      "paymentMethod": "CARD",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:33.889Z"
+    },
+    {
+      "id": "inv-1791643113884",
+      "invoiceNo": "INV-2026-022",
+      "customerId": "c-walk-in",
+      "customerName": "Aarav Sharma (Mumbai)",
+      "items": [
+        {
+          "productId": "p-1791643113879",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 180,
+      "sgst": 180,
+      "igst": 0,
+      "isInterState": false,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "27 - Maharashtra (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:38:33.884Z"
+    },
+    {
+      "id": "inv-1791643028146",
+      "invoiceNo": "INV-2026-021",
+      "customerId": "c-walk-in",
+      "customerName": "Hacker Attempt",
+      "items": [
+        {
+          "productId": "p-1791643028120",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 18,
+      "tax": 180,
+      "cgst": 90,
+      "sgst": 90,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1180,
+      "amountInWords": "Rupees One Thousand One Hundred and Eighty Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:37:08.146Z"
+    },
+    {
+      "id": "inv-1791643028141",
+      "invoiceNo": "INV-2026-020",
+      "customerId": "c-walk-in",
+      "customerName": "Vikram Malhotra (Delhi)",
+      "items": [
+        {
+          "productId": "p-1791643028120",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 150,
+      "discountPercent": 15,
+      "taxableAmount": 850,
+      "taxRate": 18,
+      "tax": 153,
+      "cgst": 76.5,
+      "sgst": 76.5,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1003,
+      "amountInWords": "Rupees One Thousand Three Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:37:08.141Z"
+    },
+    {
+      "id": "inv-1791643028136",
+      "invoiceNo": "INV-2026-019",
+      "customerId": "c-walk-in",
+      "customerName": "Kavita Reddy (Bangalore)",
+      "items": [
+        {
+          "productId": "p-1791643028120",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 0
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 0,
+      "tax": 0,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1000,
+      "amountInWords": "Rupees One Thousand Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:37:08.136Z"
+    },
+    {
+      "id": "inv-1791643028131",
+      "invoiceNo": "INV-2026-018",
+      "customerId": "c-walk-in",
+      "customerName": "Priya Patel (Ahmedabad)",
+      "items": [
+        {
+          "productId": "p-1791643028120",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 360,
+      "isInterState": true,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "24 - Gujarat (Inter-state)",
+      "paymentMethod": "CARD",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:37:08.131Z"
+    },
+    {
+      "id": "inv-1791643028126",
+      "invoiceNo": "INV-2026-017",
+      "customerId": "c-walk-in",
+      "customerName": "Aarav Sharma (Mumbai)",
+      "items": [
+        {
+          "productId": "p-1791643028120",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 180,
+      "sgst": 180,
+      "igst": 0,
+      "isInterState": false,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "27 - Maharashtra (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:37:08.126Z"
+    },
+    {
+      "id": "inv-1791643007449",
+      "invoiceNo": "INV-2026-016",
+      "customerId": "c-walk-in",
+      "customerName": "Hacker Attempt",
+      "items": [
+        {
+          "productId": "p-1791643007419",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 18,
+      "tax": 180,
+      "cgst": 90,
+      "sgst": 90,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1180,
+      "amountInWords": "Rupees One Thousand One Hundred and Eighty Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:36:47.449Z"
+    },
+    {
+      "id": "inv-1791643007444",
+      "invoiceNo": "INV-2026-015",
+      "customerId": "c-walk-in",
+      "customerName": "Vikram Malhotra (Delhi)",
+      "items": [
+        {
+          "productId": "p-1791643007419",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 150,
+      "discountPercent": 15,
+      "taxableAmount": 850,
+      "taxRate": 18,
+      "tax": 153,
+      "cgst": 76.5,
+      "sgst": 76.5,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1003,
+      "amountInWords": "Rupees One Thousand Three Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:36:47.444Z"
+    },
+    {
+      "id": "inv-1791643007438",
+      "invoiceNo": "INV-2026-014",
+      "customerId": "c-walk-in",
+      "customerName": "Kavita Reddy (Bangalore)",
+      "items": [
+        {
+          "productId": "p-1791643007419",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 1,
+          "hsnCode": "8471",
+          "taxRate": 0
+        }
+      ],
+      "subtotal": 1000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 1000,
+      "taxRate": 0,
+      "tax": 0,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "isInterState": false,
+      "total": 1000,
+      "amountInWords": "Rupees One Thousand Only",
+      "placeOfSupply": "State (Intra-state)",
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:36:47.438Z"
+    },
+    {
+      "id": "inv-1791643007433",
+      "invoiceNo": "INV-2026-013",
+      "customerId": "c-walk-in",
+      "customerName": "Priya Patel (Ahmedabad)",
+      "items": [
+        {
+          "productId": "p-1791643007419",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 360,
+      "isInterState": true,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "24 - Gujarat (Inter-state)",
+      "paymentMethod": "CARD",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:36:47.433Z"
+    },
+    {
+      "id": "inv-1791643007426",
+      "invoiceNo": "INV-2026-012",
+      "customerId": "c-walk-in",
+      "customerName": "Aarav Sharma (Mumbai)",
+      "items": [
+        {
+          "productId": "p-1791643007419",
+          "name": "GST Certified Precision Hardware",
+          "price": 1000,
+          "quantity": 2,
+          "hsnCode": "8471",
+          "taxRate": 18
+        }
+      ],
+      "subtotal": 2000,
+      "discount": 0,
+      "discountPercent": 0,
+      "taxableAmount": 2000,
+      "taxRate": 18,
+      "tax": 360,
+      "cgst": 180,
+      "sgst": 180,
+      "igst": 0,
+      "isInterState": false,
+      "total": 2360,
+      "amountInWords": "Rupees Two Thousand Three Hundred and Sixty Only",
+      "placeOfSupply": "27 - Maharashtra (Intra-state)",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T14:36:47.426Z"
+    },
     {
       "id": "inv-1791640770167",
       "invoiceNo": "INV-2026-011",
@@ -557,6 +1470,237 @@
   "activities": [
     {
       "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-033 containing 1 item(s) for Hacker Attempt. Total: ₹1,180.00",
+      "type": "sale",
+      "id": "act-1791643162625-gk4",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-032 containing 1 item(s) for Vikram Malhotra (Delhi). Total: ₹1,003.00",
+      "type": "sale",
+      "id": "act-1791643162619-e9z",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-031 containing 1 item(s) for Kavita Reddy (Bangalore). Total: ₹1,000.00",
+      "type": "sale",
+      "id": "act-1791643162613-nhx",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-030 containing 1 item(s) for Priya Patel (Ahmedabad). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643162606-58d",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-029 containing 1 item(s) for Aarav Sharma (Mumbai). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643162597-gzh",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"GST Certified Precision Hardware\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643162590-zn5",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-028 containing 1 item(s) for Aarav Mehta. Total: ₹403.56",
+      "type": "sale",
+      "id": "act-1791643137025-d1z",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Premium Leather Bifold Wallet\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643137006-mi6",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Industrial Microfibre Cleaning Cloth (Bulk Pack)\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643137000-v3v",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Hex Flange Head Bolt Set (M10 x 50mm)\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643136995-2uu",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Classic Linen Slim-Fit Shirt\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643136990-80d",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Sony Bravia 55\" 4K OLED TV\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643136984-5q8",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Amoxicillin & Clavulanate 625mg\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643136978-r4o",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Organic Whole Wheat Atta 5kg\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643136972-krz",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-027 containing 1 item(s) for Alexander Wright. Total: ₹1,414.82",
+      "type": "sale",
+      "id": "act-1791643128216-50g",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-026 containing 1 item(s) for Hacker Attempt. Total: ₹1,180.00",
+      "type": "sale",
+      "id": "act-1791643113905-fvv",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-025 containing 1 item(s) for Vikram Malhotra (Delhi). Total: ₹1,003.00",
+      "type": "sale",
+      "id": "act-1791643113901-hib",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-024 containing 1 item(s) for Kavita Reddy (Bangalore). Total: ₹1,000.00",
+      "type": "sale",
+      "id": "act-1791643113895-yvw",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-023 containing 1 item(s) for Priya Patel (Ahmedabad). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643113889-3zq",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-022 containing 1 item(s) for Aarav Sharma (Mumbai). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643113884-v8m",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"GST Certified Precision Hardware\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643113879-lf9",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-021 containing 1 item(s) for Hacker Attempt. Total: ₹1,180.00",
+      "type": "sale",
+      "id": "act-1791643028146-rdu",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-020 containing 1 item(s) for Vikram Malhotra (Delhi). Total: ₹1,003.00",
+      "type": "sale",
+      "id": "act-1791643028141-cl1",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-019 containing 1 item(s) for Kavita Reddy (Bangalore). Total: ₹1,000.00",
+      "type": "sale",
+      "id": "act-1791643028136-0ft",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-018 containing 1 item(s) for Priya Patel (Ahmedabad). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643028131-oan",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-017 containing 1 item(s) for Aarav Sharma (Mumbai). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643028126-zpv",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"GST Certified Precision Hardware\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643028120-q0i",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-016 containing 1 item(s) for Hacker Attempt. Total: ₹1,180.00",
+      "type": "sale",
+      "id": "act-1791643007449-ura",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-015 containing 1 item(s) for Vikram Malhotra (Delhi). Total: ₹1,003.00",
+      "type": "sale",
+      "id": "act-1791643007444-4dh",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-014 containing 1 item(s) for Kavita Reddy (Bangalore). Total: ₹1,000.00",
+      "type": "sale",
+      "id": "act-1791643007438-mfg",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-013 containing 1 item(s) for Priya Patel (Ahmedabad). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643007433-coa",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-012 containing 1 item(s) for Aarav Sharma (Mumbai). Total: ₹2,360.00",
+      "type": "sale",
+      "id": "act-1791643007427-xg1",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"GST Certified Precision Hardware\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791643007419-2rz",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
       "description": "Generated invoice INV-2026-011 containing 1 item(s) for Alexander Wright. Total: $1414.82",
       "type": "sale",
       "id": "act-1791640770167-3ct",
@@ -673,38 +1817,10 @@
       "description": "Generated invoice INV-2026-003 for Sophia Chen.",
       "time": "2 hours ago",
       "type": "sale"
-    },
-    {
-      "id": "act-2",
-      "title": "Low Stock Alert",
-      "description": "AirPods Max stock level is low (4 remaining).",
-      "time": "4 hours ago",
-      "type": "stock"
-    },
-    {
-      "id": "act-3",
-      "title": "New Product Registered",
-      "description": "Added Keychron Q2 Mechanical Keyboard under Accessories.",
-      "time": "Yesterday",
-      "type": "stock"
-    },
-    {
-      "id": "act-4",
-      "title": "Payment Received",
-      "description": "Received online UPI payment of $1,921.04 from Alexander Wright.",
-      "time": "Yesterday",
-      "type": "sale"
-    },
-    {
-      "id": "act-5",
-      "title": "OutOfStock Warning",
-      "description": "Sony WH-1000XM4 headphones are completely sold out.",
-      "time": "2 days ago",
-      "type": "stock"
     }
   ],
   "settings": {
-    "businessName": "ChrisSoft AI Enterprise",
+    "businessName": "ChrisSoft AI Enterprise Platform",
     "businessEmail": "contact@chrissoft.ai",
     "phone": "+1 (555) 0100",
     "address": "499 Commerce Park, Suite 200, New York, NY 10012",

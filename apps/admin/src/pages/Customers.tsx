@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useApp, Customer, Invoice } from '@/context/AppContext';
 import { cn } from '@/utils/cn';
+import { formatINR } from '@/utils/currency';
 import { toast } from 'sonner';
 
 export const Customers: React.FC = () => {
@@ -230,12 +231,12 @@ export const Customers: React.FC = () => {
                                             {c.purchaseCount || 0}
                                         </td>
                                         <td className="p-4 text-right font-bold text-foreground">
-                                            ${(c.totalSpent || 0).toLocaleString()}
+                                            {formatINR(c.totalSpent || 0)}
                                         </td>
                                         <td className="p-4 text-right">
                                             {c.balance > 0 ? (
                                                 <span className="font-bold text-rose-500 bg-rose-50 dark:bg-rose-500/10 px-2.5 py-1 rounded-lg">
-                                                    ${c.balance.toLocaleString()}
+                                                    {formatINR(c.balance)}
                                                 </span>
                                             ) : (
                                                 <span className="text-muted-foreground">&mdash;</span>
@@ -297,12 +298,12 @@ export const Customers: React.FC = () => {
                                             "text-base font-bold mt-1",
                                             selectedCustomer.balance > 0 ? "text-rose-500" : "text-muted-foreground"
                                         )}>
-                                            ${selectedCustomer.balance}
+                                            {formatINR(selectedCustomer.balance)}
                                         </p>
                                     </div>
                                     <div>
                                         <span className="text-[9px] uppercase font-bold text-muted-foreground">Total Invoiced</span>
-                                        <p className="text-base font-bold mt-1 text-foreground">${selectedCustomer.totalSpent}</p>
+                                        <p className="text-base font-bold mt-1 text-foreground">{formatINR(selectedCustomer.totalSpent)}</p>
                                     </div>
                                 </div>
 
@@ -340,9 +341,9 @@ export const Customers: React.FC = () => {
                                         <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Average Order</span>
                                         <div className="flex justify-between items-end mt-2">
                                             <h4 className="text-xl font-bold">
-                                                ${selectedCustomer.purchaseCount > 0
+                                                {formatINR(selectedCustomer.purchaseCount > 0
                                                     ? Math.round(selectedCustomer.totalSpent / selectedCustomer.purchaseCount)
-                                                    : 0}
+                                                    : 0)}
                                             </h4>
                                             <TrendingUp className="w-4.5 h-4.5 text-emerald-400" />
                                         </div>
@@ -376,7 +377,7 @@ export const Customers: React.FC = () => {
                                                 </div>
 
                                                 <div className="text-right">
-                                                    <p className="font-bold text-foreground">${inv.total}</p>
+                                                    <p className="font-bold text-foreground">{formatINR(inv.total)}</p>
                                                     <span className="text-[9px] text-muted-foreground/60 block mt-0.5">{new Date(inv.createdAt).toLocaleDateString()}</span>
                                                 </div>
                                             </div>

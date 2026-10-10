@@ -87,10 +87,21 @@ export const customersApi = {
 export interface CheckoutPayload {
   customerId?: string;
   customerName?: string;
-  items: { productId: string; quantity: number }[];
+  customerGstin?: string;
+  customerAddress?: string;
+  items: {
+    productId: string;
+    quantity: number;
+    batchNumber?: string;
+    serialNumber?: string;
+    unitOfMeasure?: string;
+    hsnCode?: string;
+  }[];
   paymentMethod: Invoice['paymentMethod'];
   discountPercent?: number;
   taxPercent?: number;
+  isInterState?: boolean;
+  placeOfSupply?: string;
 }
 
 export interface CheckoutResponse {

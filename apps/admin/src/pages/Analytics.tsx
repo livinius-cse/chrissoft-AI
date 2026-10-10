@@ -33,10 +33,11 @@ import {
     Legend
 } from 'recharts';
 import { cn } from '@/utils/cn';
+import { formatINR } from '@/utils/currency';
 
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#14b8a6'];
 
-const formatCurrency = (v: number) => `$${v.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+const formatCurrency = (v: number) => formatINR(v, { showDecimals: false });
 
 export const Analytics: React.FC = () => {
     const { invoices, products, customers, activities } = useApp();
@@ -82,10 +83,10 @@ export const Analytics: React.FC = () => {
     // ── Customer Lifetime Value distribution ───────────────────────────────
     const clvBuckets = useMemo(() => {
         const buckets = [
-            { range: '$0–$500', count: 0, color: '#94a3b8' },
-            { range: '$500–$2K', count: 0, color: '#6366f1' },
-            { range: '$2K–$5K', count: 0, color: '#10b981' },
-            { range: '$5K+', count: 0, color: '#f59e0b' },
+            { range: '₹0–₹500', count: 0, color: '#94a3b8' },
+            { range: '₹500–₹2K', count: 0, color: '#6366f1' },
+            { range: '₹2K–₹5K', count: 0, color: '#10b981' },
+            { range: '₹5K+', count: 0, color: '#f59e0b' },
         ];
         customers.forEach(c => {
             if (c.totalSpent < 500) buckets[0].count++;

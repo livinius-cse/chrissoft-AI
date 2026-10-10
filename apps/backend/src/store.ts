@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Customer, Product, Invoice, Activity, Settings, User, InvoiceItem } from './types';
+import { calculateGSTBreakdown, numberToIndianWords, formatINR } from './utils/currency';
 
 const DATA_DIR = path.resolve(__dirname, '../data');
 const DATA_FILE = path.join(DATA_DIR, 'store.json');
@@ -271,12 +272,34 @@ class Store {
   checkout(params: {
     customerId?: string;
     customerName?: string;
-    items: { productId: string; quantity: number }[];
+    customerGstin?: string;
+    customerAddress?: string;
+    items: {
+      productId: string;
+      quantity: number;
+      batchNumber?: string;
+      serialNumber?: string;
+      unitOfMeasure?: string;
+      hsnCode?: string;
+    }[];
     paymentMethod: Invoice['paymentMethod'];
     discountPercent?: number;
     taxPercent?: number;
+    isInterState?: boolean;
+    placeOfSupply?: string;
   }): { invoice: Invoice; updatedProducts: Product[]; customer?: Customer } {
-    const { customerId, customerName, items, paymentMethod, discountPercent = 0, taxPercent = 18 } = params;
+    const {
+      customerId,
+      customerName,
+      customerGstin,
+      customerAddress,
+      items,
+      paymentMethod,
+      discountPercent = 0,
+      taxPercent = 18,
+      isInterState = false,
+      placeOfSupply = 'State (Intra-state)'
+    } = params;
 
     if (!items || items.length === 0) {
       throw new Error('Cart items cannot be empty');
@@ -286,12 +309,16 @@ class Store {
     let customer = customerId ? this.getCustomer(customerId) : undefined;
     const clientName = customer ? customer.name : (customerName || 'Walk-in Customer');
     const clientId = customer ? customer.id : 'c-walk-in';
+    const clientAddress = customer ? customer.address : (customerAddress || '');
 
-    // 2. Validate and price items
+    // 2. Validate and price items (Atomic stock verification)
     const invoiceItems: InvoiceItem[] = [];
     const updatedProducts: Product[] = [];
 
     for (const item of items) {
+      if (!item.quantity || item.quantity <= 0) {
+        throw new Error(`Invalid item quantity for product ${item.productId}`);
+      }
       const prod = this.getProduct(item.productId);
       if (!prod) {
         throw new Error(`Product not found: ${item.productId}`);
@@ -304,16 +331,23 @@ class Store {
         productId: prod.id,
         name: prod.name,
         price: prod.price,
-        quantity: item.quantity
+        quantity: item.quantity,
+        batchNumber: item.batchNumber || prod.batchNumber,
+        serialNumber: item.serialNumber,
+        unitOfMeasure: item.unitOfMeasure || prod.unitOfMeasure,
+        hsnCode: item.hsnCode || '8471',
+        taxRate: Number(taxPercent)
       });
     }
 
-    // 3. Compute financial amounts
-    const subtotal = invoiceItems.reduce((acc, it) => acc + (it.price * it.quantity), 0);
-    const discount = Math.round(subtotal * (discountPercent / 100) * 100) / 100;
-    const taxableAmount = subtotal - discount;
-    const tax = Math.round(taxableAmount * (taxPercent / 100) * 100) / 100;
-    const total = taxableAmount + tax;
+    // 3. Compute authoritative financial amounts with paise precision
+    const subtotal = Math.round(invoiceItems.reduce((acc, it) => acc + (it.price * it.quantity), 0) * 100) / 100;
+    const safeDiscountPercent = Math.max(0, Math.min(100, Number(discountPercent) || 0));
+    const discount = Math.round((subtotal * (safeDiscountPercent / 100)) * 100) / 100;
+    const safeTaxPercent = Math.max(0, Number(taxPercent) !== undefined && !isNaN(Number(taxPercent)) ? Number(taxPercent) : 18);
+    
+    const gstBreakdown = calculateGSTBreakdown(subtotal, discount, safeTaxPercent, Boolean(isInterState));
+    const amountInWords = numberToIndianWords(gstBreakdown.grandTotal);
 
     // 4. Update product inventory stocks
     for (const item of items) {
@@ -331,7 +365,7 @@ class Store {
     if (customer) {
       customer = this.updateCustomer(customer.id, {
         purchaseCount: customer.purchaseCount + 1,
-        totalSpent: Math.round((customer.totalSpent + total) * 100) / 100
+        totalSpent: Math.round((customer.totalSpent + gstBreakdown.grandTotal) * 100) / 100
       })!;
     }
 
@@ -342,11 +376,23 @@ class Store {
       invoiceNo: invNo,
       customerId: clientId,
       customerName: clientName,
+      customerGstin: customerGstin || undefined,
+      customerAddress: clientAddress || undefined,
       items: invoiceItems,
       subtotal,
       discount,
-      tax,
-      total,
+      discountPercent: safeDiscountPercent,
+      taxableAmount: gstBreakdown.netTaxableAmount,
+      taxRate: safeTaxPercent,
+      tax: gstBreakdown.totalTax,
+      cgst: gstBreakdown.cgstAmount,
+      sgst: gstBreakdown.sgstAmount,
+      igst: gstBreakdown.igstAmount,
+      isInterState: Boolean(isInterState),
+      total: gstBreakdown.grandTotal,
+      amountInWords,
+      placeOfSupply,
+      gstin: this.data.settings.gstin,
       paymentMethod,
       paymentStatus: 'PAID',
       createdAt: new Date().toISOString()
@@ -357,7 +403,7 @@ class Store {
     // 7. Activity
     this.addActivity({
       title: 'Invoice Generated',
-      description: `Generated invoice ${invNo} containing ${items.length} item(s) for ${clientName}. Total: $${total.toFixed(2)}`,
+      description: `Generated invoice ${invNo} containing ${items.length} item(s) for ${clientName}. Total: ${formatINR(gstBreakdown.grandTotal)}`,
       type: 'sale'
     });
 

@@ -32,14 +32,14 @@ import {
 } from 'recharts';
 import { cn } from '@/utils/cn';
 import { toast } from 'sonner';
+import { formatINR } from '@/utils/currency';
 
 // ─── GST Calculation helpers ────────────────────────────────────────────────
 const GST_RATE = 0.18;
 const CGST_RATE = GST_RATE / 2;
 const SGST_RATE = GST_RATE / 2;
 
-const formatCurrency = (amount: number) =>
-    `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const formatCurrency = (amount: number) => formatINR(amount);
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -199,7 +199,7 @@ export const Reports: React.FC = () => {
                                 <Tooltip
                                     contentStyle={{ backgroundColor: 'rgba(15,23,42,0.9)', borderColor: '#334155', borderRadius: '12px' }}
                                     labelStyle={{ color: '#94a3b8', fontSize: '11px', fontWeight: 'bold' }}
-                                    formatter={(value: number) => [`$${value.toLocaleString()}`, '']}
+                                    formatter={(value: number) => [formatINR(value), '']}
                                 />
                                 <Bar dataKey="Revenue" fill="#6366f1" radius={[4, 4, 0, 0]} maxBarSize={28} />
                                 <Bar dataKey="Tax" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={28} />

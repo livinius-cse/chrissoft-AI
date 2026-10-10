@@ -36,7 +36,18 @@ router.get('/:id', authenticate, requireRole('ADMIN', 'STAFF'), (req: Authentica
 
 // POS Checkout Handler - ADMIN and STAFF
 const handleCheckout = (req: AuthenticatedRequest, res: Response) => {
-  const { customerId, customerName, items, paymentMethod, discountPercent, taxPercent } = req.body;
+  const {
+    customerId,
+    customerName,
+    customerGstin,
+    customerAddress,
+    items,
+    paymentMethod,
+    discountPercent,
+    taxPercent,
+    isInterState,
+    placeOfSupply
+  } = req.body;
 
   if (!items || !Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'Items list is required for checkout' });
@@ -46,10 +57,14 @@ const handleCheckout = (req: AuthenticatedRequest, res: Response) => {
     const result = store.checkout({
       customerId,
       customerName,
+      customerGstin,
+      customerAddress,
       items,
       paymentMethod: paymentMethod || 'CASH',
-      discountPercent: Number(discountPercent) || 0,
-      taxPercent: Number(taxPercent) || 18
+      discountPercent: discountPercent !== undefined ? Number(discountPercent) : 0,
+      taxPercent: taxPercent !== undefined ? Number(taxPercent) : undefined,
+      isInterState: Boolean(isInterState),
+      placeOfSupply: placeOfSupply || undefined
     });
 
     return res.status(201).json({
