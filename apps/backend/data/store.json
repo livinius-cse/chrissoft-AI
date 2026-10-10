@@ -7,8 +7,8 @@
       "phone": "+1 (555) 0192",
       "address": "499 Broadway, New York, NY 10012",
       "balance": 0,
-      "purchaseCount": 20,
-      "totalSpent": 12040.92,
+      "purchaseCount": 21,
+      "totalSpent": 13455.74,
       "avatarColor": "from-pink-500 to-rose-500",
       "createdAt": "2026-01-15T10:00:00Z"
     },
@@ -63,13 +63,168 @@
   ],
   "products": [
     {
+      "name": "Premium Leather Bifold Wallet",
+      "sku": "RET-1791640765174",
+      "barcode": "8901234007",
+      "price": 1499,
+      "cost": 600,
+      "stock": 40,
+      "minStock": 8,
+      "category": "General",
+      "image": "📦",
+      "status": "ACTIVE",
+      "mrp": 2499,
+      "brand": "WildHorn",
+      "id": "p-1791640765176"
+    },
+    {
+      "name": "Industrial Microfibre Cleaning Cloth (Bulk Pack)",
+      "sku": "WS-1791640765171",
+      "barcode": "8901234006",
+      "price": 1200,
+      "cost": 650,
+      "stock": 500,
+      "minStock": 50,
+      "category": "Wholesale",
+      "image": "📦",
+      "status": "ACTIVE",
+      "minOrderQty": 5,
+      "cartonQty": 20,
+      "tieredPricing": [
+        {
+          "minQty": 10,
+          "unitPrice": 1100
+        },
+        {
+          "minQty": 50,
+          "unitPrice": 950
+        },
+        {
+          "minQty": 100,
+          "unitPrice": 850
+        }
+      ],
+      "id": "p-1791640765173"
+    },
+    {
+      "name": "Hex Flange Head Bolt Set (M10 x 50mm)",
+      "sku": "HW-1791640765168",
+      "barcode": "8901234005",
+      "price": 450,
+      "cost": 210,
+      "stock": 200,
+      "minStock": 25,
+      "category": "Hardware",
+      "image": "📦",
+      "status": "ACTIVE",
+      "unitOfMeasure": "box of 50",
+      "grade": "SS-304 Stainless Steel",
+      "gauge": "M10 x 50mm Pitch 1.5",
+      "technicalSpecs": "DIN 6921 standard, Tensile strength 700 N/mm2",
+      "id": "p-1791640765169"
+    },
+    {
+      "name": "Classic Linen Slim-Fit Shirt",
+      "sku": "FASH-1791640765165",
+      "barcode": "8901234004",
+      "price": 1999,
+      "cost": 850,
+      "stock": 30,
+      "minStock": 5,
+      "category": "Clothing",
+      "image": "📦",
+      "status": "ACTIVE",
+      "size": "L",
+      "color": "Navy Blue",
+      "material": "100% French Linen",
+      "variants": [
+        {
+          "sku": "FASH-S-NAVY",
+          "size": "S",
+          "color": "Navy",
+          "stock": 10,
+          "price": 1999
+        },
+        {
+          "sku": "FASH-M-NAVY",
+          "size": "M",
+          "color": "Navy",
+          "stock": 10,
+          "price": 1999
+        },
+        {
+          "sku": "FASH-L-NAVY",
+          "size": "L",
+          "color": "Navy",
+          "stock": 10,
+          "price": 1999
+        }
+      ],
+      "id": "p-1791640765166"
+    },
+    {
+      "name": "Sony Bravia 55\" 4K OLED TV",
+      "sku": "ELEC-1791640765161",
+      "barcode": "8901234003",
+      "price": 89999,
+      "cost": 65000,
+      "stock": 8,
+      "minStock": 2,
+      "category": "Electronics",
+      "image": "📦",
+      "status": "ACTIVE",
+      "brand": "Sony",
+      "model": "XR-55A80L",
+      "warrantyMonths": 36,
+      "serialNumbers": [
+        "SN-SONY-001",
+        "SN-SONY-002"
+      ],
+      "id": "p-1791640765162"
+    },
+    {
+      "name": "Amoxicillin & Clavulanate 625mg",
+      "sku": "MED-1791640765158",
+      "barcode": "8901234002",
+      "price": 180,
+      "cost": 110,
+      "stock": 98,
+      "minStock": 20,
+      "category": "Medicine",
+      "image": "📦",
+      "status": "ACTIVE",
+      "batchNumber": "MED-B992",
+      "expiryDate": "2028-12-31",
+      "composition": "Amoxicillin (500mg) + Clavulanic Acid (125mg)",
+      "dosageForm": "Tablet",
+      "requiresPrescription": true,
+      "id": "p-1791640765159"
+    },
+    {
+      "name": "Organic Whole Wheat Atta 5kg",
+      "sku": "GROC-1791640765153",
+      "barcode": "8901234001",
+      "price": 320,
+      "cost": 240,
+      "stock": 50,
+      "minStock": 10,
+      "category": "Groceries",
+      "image": "📦",
+      "status": "ACTIVE",
+      "batchNumber": "BATCH-2026-OCT",
+      "expiryDate": "2027-04-30",
+      "unitOfMeasure": "kg",
+      "isPerishable": false,
+      "id": "p-1791640765155"
+    },
+    {
       "id": "p-1",
       "sku": "PRD-IP15P",
       "name": "iPhone 15 Pro Max (256GB - Titanium)",
       "barcode": "190199092837",
       "price": 1199,
       "cost": 780,
-      "stock": 40,
+      "stock": 39,
       "minStock": 10,
       "category": "Electronics",
       "image": "📱",
@@ -155,6 +310,48 @@
     }
   ],
   "invoices": [
+    {
+      "id": "inv-1791640770167",
+      "invoiceNo": "INV-2026-011",
+      "customerId": "c-1",
+      "customerName": "Alexander Wright",
+      "items": [
+        {
+          "productId": "p-1",
+          "name": "iPhone 15 Pro Max (256GB - Titanium)",
+          "price": 1199,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1199,
+      "discount": 0,
+      "tax": 215.82,
+      "total": 1414.82,
+      "paymentMethod": "CASH",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T13:59:30.167Z"
+    },
+    {
+      "id": "inv-1791640765189",
+      "invoiceNo": "INV-2026-010",
+      "customerId": "c-walk-in",
+      "customerName": "Aarav Mehta",
+      "items": [
+        {
+          "productId": "p-1791640765159",
+          "name": "Amoxicillin & Clavulanate 625mg",
+          "price": 180,
+          "quantity": 2
+        }
+      ],
+      "subtotal": 360,
+      "discount": 18,
+      "tax": 61.56,
+      "total": 403.56,
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-10T13:59:25.189Z"
+    },
     {
       "id": "inv-1791640153002",
       "invoiceNo": "INV-2026-09",
@@ -360,6 +557,69 @@
   "activities": [
     {
       "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-011 containing 1 item(s) for Alexander Wright. Total: $1414.82",
+      "type": "sale",
+      "id": "act-1791640770167-3ct",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
+      "description": "Generated invoice INV-2026-010 containing 1 item(s) for Aarav Mehta. Total: $403.56",
+      "type": "sale",
+      "id": "act-1791640765189-n4a",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Premium Leather Bifold Wallet\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765176-x2w",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Industrial Microfibre Cleaning Cloth (Bulk Pack)\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765173-754",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Hex Flange Head Bolt Set (M10 x 50mm)\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765169-1mx",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Classic Linen Slim-Fit Shirt\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765166-zvj",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Sony Bravia 55\" 4K OLED TV\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765162-c6b",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Amoxicillin & Clavulanate 625mg\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765159-7up",
+      "time": "Just now"
+    },
+    {
+      "title": "New Product Registered",
+      "description": "Added \"Organic Whole Wheat Atta 5kg\" to inventory catalogue.",
+      "type": "stock",
+      "id": "act-1791640765155-xku",
+      "time": "Just now"
+    },
+    {
+      "title": "Invoice Generated",
       "description": "Generated invoice INV-2026-09 containing 1 item(s) for Alexander Wright. Total: $1414.82",
       "type": "sale",
       "id": "act-1791640153002-mdg",
@@ -451,7 +711,8 @@
     "website": "https://chrissoft.ai",
     "taxRate": 18,
     "currency": "USD",
-    "receiptFooter": "Thank you for shopping with ChrisSoft AI!"
+    "receiptFooter": "Thank you for shopping with ChrisSoft AI!",
+    "businessType": "WHOLESALE"
   },
   "users": [
     {

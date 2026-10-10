@@ -44,8 +44,9 @@ const initialSettings: Settings = {
   address: '499 Commerce Park, Suite 200, New York, NY 10012',
   website: 'https://chrissoft.ai',
   taxRate: 18,
-  currency: 'USD',
-  receiptFooter: 'Thank you for choosing ChrisSoft AI Enterprise Platform.'
+  currency: 'INR',
+  receiptFooter: 'Thank you for choosing ChrisSoft AI Enterprise Platform.',
+  businessType: 'ELECTRONICS'
 };
 
 const initialUsers: User[] = [
@@ -105,6 +106,10 @@ class Store {
       if (fs.existsSync(DATA_FILE)) {
         const raw = fs.readFileSync(DATA_FILE, 'utf-8');
         const parsed: StoreData = JSON.parse(raw);
+        // Ensure settings has businessType fallback
+        if (parsed.settings && !parsed.settings.businessType) {
+          parsed.settings.businessType = 'ELECTRONICS';
+        }
         // Ensure default staff user exists for testing/evaluation without breaking existing users
         if (parsed.users && !parsed.users.some(u => u.email === 'staff@chrissoft.com')) {
           const staffUser = initialUsers.find(u => u.email === 'staff@chrissoft.com');
