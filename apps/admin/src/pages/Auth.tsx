@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
     Sparkles,
     Mail,
@@ -23,17 +23,26 @@ type AuthScreen = 'login' | 'signup' | 'forgot' | 'otp';
 
 export const Auth: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { login } = useAuth();
-    const [screen, setScreen] = useState<AuthScreen>('login');
+    const [screen, setScreen] = useState<AuthScreen>(location.pathname === '/signup' ? 'signup' : 'login');
     const isDev = import.meta.env.DEV;
 
     // Form states - prefilled strictly in development mode only
     const [email, setEmail] = useState(isDev ? 'admin@chrissoft.com' : '');
     const [password, setPassword] = useState(isDev ? 'password123' : '');
     const [businessName, setBusinessName] = useState(isDev ? 'ChrisSoft AI Enterprise' : '');
+    const [managerName, setManagerName] = useState('');
     const [otpCode, setOtpCode] = useState(['', '', '', '']);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+
+    useEffect(() => {
+        if (location.pathname === '/signup' || location.pathname === '/login') {
+            setScreen(location.pathname.slice(1) as 'login' | 'signup');
+            setErrorMsg('');
+        }
+    }, [location.pathname]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -67,12 +76,14 @@ export const Auth: React.FC = () => {
         setIsLoading(true);
         setErrorMsg('');
         try {
-            await authApi.signup(businessName, email, password);
-            toast.success('Registration initiated. Verification code sent.');
-            setScreen('otp');
+            await authApi.signup(managerName, businessName, email, password);
+            toast.success('Account created. Sign in with your new credentials.');
+            setScreen('login');
+            navigate('/login');
         } catch (err: any) {
-            console.warn('Backend signup fallback:', err);
-            setScreen('otp');
+            const msg = err.message || 'Unable to create your account.';
+            setErrorMsg(msg);
+            toast.error(msg);
         } finally {
             setIsLoading(false);
         }
@@ -303,6 +314,16 @@ export const Auth: React.FC = () => {
                                         </>
                                     )}
                                 </button>
+                                <p className="text-center text-xs text-slate-400">
+                                    New to ChrisSoft AI?{' '}
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/signup')}
+                                        className="font-semibold text-brand-400 hover:text-brand-300"
+                                    >
+                                        Create an account
+                                    </button>
+                                </p>
                             </form>
                         )}
 
@@ -313,14 +334,21 @@ export const Auth: React.FC = () => {
                                     <h2 className="font-display text-2xl font-bold text-white tracking-tight">Create Merchant Site</h2>
                                     <p className="text-slate-400 text-xs mt-1.5">
                                         Already registered with us?{' '}
-                                        <span
-                                            onClick={() => setScreen('login')}
-                                            className="text-brand-500 hover:text-brand-400 font-semibold cursor-pointer underline hover:no-underline"
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/login')}
+                                            className="text-brand-500 hover:text-brand-400 font-semibold underline hover:no-underline"
                                         >
-                                            Login
-                                        </span>
+                                            Sign in
+                                        </button>
                                     </p>
                                 </div>
+
+                                {errorMsg && (
+                                    <div className="px-3.5 py-2.5 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl font-medium">
+                                        {errorMsg}
+                                    </div>
+                                )}
 
                                 <div className="space-y-4">
                                     {/* Account Name */}
@@ -332,6 +360,8 @@ export const Auth: React.FC = () => {
                                             </div>
                                             <input
                                                 type="text"
+                                                value={managerName}
+                                                onChange={(e) => setManagerName(e.target.value)}
                                                 placeholder="e.g. John Doe"
                                                 className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700/60 focus:border-brand-500 focus:outline-none rounded-xl text-slate-200 text-sm transition-all duration-200"
                                                 required
@@ -384,7 +414,10 @@ export const Auth: React.FC = () => {
                                             </div>
                                             <input
                                                 type="password"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
                                                 placeholder="Must be 8+ characters"
+                                                minLength={8}
                                                 className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700/60 focus:border-brand-500 focus:outline-none rounded-xl text-slate-200 text-sm transition-all duration-200"
                                                 required
                                             />
@@ -405,6 +438,16 @@ export const Auth: React.FC = () => {
                                         </>
                                     )}
                                 </button>
+                                <p className="text-center text-xs text-slate-400">
+                                    Already have an account?{' '}
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/login')}
+                                        className="font-semibold text-brand-400 hover:text-brand-300"
+                                    >
+                                        Sign in
+                                    </button>
+                                </p>
                             </form>
                         )}
 

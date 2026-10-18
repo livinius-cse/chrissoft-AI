@@ -41,9 +41,21 @@ router.post('/login', (req: Request, res: Response) => {
 });
 
 router.post('/signup', (req: Request, res: Response) => {
-  const { businessName, email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+  const { managerName, businessName, email, password } = req.body ?? {};
+  if (
+    typeof managerName !== 'string' ||
+    typeof businessName !== 'string' ||
+    typeof email !== 'string' ||
+    typeof password !== 'string' ||
+    !managerName.trim() ||
+    !businessName.trim() ||
+    !email.trim() ||
+    !password
+  ) {
+    return res.status(400).json({ error: 'Manager name, business name, email, and password are required' });
+  }
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
 
   const existing = store.getUserByEmail(email);
@@ -53,7 +65,7 @@ router.post('/signup', (req: Request, res: Response) => {
 
   // Register new customer / merchant
   const newUser = store.addUser({
-    name: businessName || email.split('@')[0],
+    name: managerName,
     email,
     passwordHash: password,
     organizationId: `org-${Date.now()}`,
@@ -63,7 +75,7 @@ router.post('/signup', (req: Request, res: Response) => {
 
   return res.json({
     success: true,
-    message: 'Registration successful. Verification OTP sent.',
+    message: 'Account created successfully. Sign in with your new credentials.',
     userId: newUser.id,
     email: newUser.email
   });
