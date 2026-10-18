@@ -3,8 +3,8 @@ services:
     name: chrissoft-ai-api
     runtime: node
     plan: free
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @equation-orchestra/backend... build
-    startCommand: pnpm --filter @equation-orchestra/backend start
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm --filter @equation-orchestra/backend... build
+    startCommand: node apps/backend/dist/index.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
