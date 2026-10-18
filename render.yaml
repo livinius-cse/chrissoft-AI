@@ -3,7 +3,7 @@ services:
     name: chrissoft-ai-api
     runtime: node
     plan: free
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @equation-orchestra/backend... build
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @equation-orchestra/backend... build
     startCommand: pnpm --filter @equation-orchestra/backend start
     healthCheckPath: /api/health
     envVars:
