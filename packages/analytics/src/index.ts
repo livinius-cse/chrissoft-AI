@@ -10,7 +10,7 @@ export class AnalyticsService {
       },
     });
 
-    const totalSpend = purchaseOrders.reduce((sum, po) => sum + po.totalAmount, 0);
+    const totalSpend = purchaseOrders.reduce((sum: number, po: { totalAmount: number }) => sum + po.totalAmount, 0);
     return {
       organizationId,
       totalSpend,

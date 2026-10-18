@@ -41,6 +41,17 @@ pnpm --filter @equation-orchestra/admin dev
 
 > **Reverse Proxy Note**: The frontend development server automatically proxies all `/api/*` calls from `http://localhost:3000/api/*` directly to `http://localhost:5000/api/*`.
 
+## Deploying to Vercel and Render
+
+The dashboard is configured for Vercel, and [render.yaml](./render.yaml) defines a free Render backend service.
+
+1. Connect this repository to Render and create a Blueprint from `render.yaml`. The API build compiles the backend and its workspace dependencies. Render supplies a generated `JWT_SECRET`.
+2. Connect the repository to Vercel with the repository root as the project root. `vercel.json` builds the admin dashboard and publishes `apps/admin/dist`.
+3. In Vercel project settings, add `VITE_API_BASE_URL` for Production, Preview, and Development as `https://<your-render-service>.onrender.com/api`, then redeploy the frontend.
+4. Check `https://<your-render-service>.onrender.com/api/health` after the API finishes deploying.
+
+The free Render service has no persistent disk, so its JSON data may reset on restart or redeploy. The backend also seeds demo accounts with known passwords and uses plaintext passwords in its JSON store. Treat this as a demo deployment only; do not use real customer data or expose it as a production system until authentication and password storage have been hardened.
+
 ---
 
 ## 📡 Integrated REST API Endpoints
